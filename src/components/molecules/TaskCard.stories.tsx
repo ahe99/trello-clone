@@ -19,9 +19,17 @@ const Template: ComponentStory<typeof TaskCard> = (args) => (
 export const Default = Template.bind({})
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Default.args = {
-  position: {row: 0, column:0},
-  data: { title: 'test card 1', description: 'test card 1', types: ['test type']},
-  onDragEnter :(e, position)=>{console.log('onDragEnter', position)},
-  onDragStart:(e, position)=>{console.log('onDragStart', position)},
-  onDragEnd: ()=>{}
+  data: {
+    title: 'test card 1',
+    description: 'test card 1',
+    types: ['test type'],
+    position: { row: 0, column: 0 },
+  },
+  onDragEnter: (e, position) => {
+    console.log('onDragEnter', position)
+  },
+  onDragStart: (e, position) => {
+    console.log('onDragStart', position)
+  },
+  onDragEnd: () => {},
 }
