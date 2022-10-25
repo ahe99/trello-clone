@@ -50,27 +50,52 @@ export const TaskColumn: FC<TaskColumnProps> = ({
         const fromIndex = from.current.row
         const toIndex = to.current.row
 
-        const computedColumn = column.map((item, index) => {
-          if (index === fromIndex) {
-            // console.log('index === fromIndex', item.title)
-            const newItem = { ...item }
-            newItem.position.row = toIndex
-            return newItem
-          } else if (index > fromIndex && index <= toIndex) {
-            // console.log('index > fromIndex && index < toIndex', item.title)
-            const newItem = { ...item }
-            newItem.position.row = newItem.position.row - 1
-            return newItem
-          } else {
-            return item
-          }
-        })
-        // console.log('computedColumn', computedColumn)
-        const sorttedColumn = computedColumn.sort(ascendingSortColumn)
-        setColumn(sorttedColumn)
+        if (fromIndex < toIndex) {
+          const computedColumn = column.map((item, index) => {
+            if (index === fromIndex) {
+              // console.log('index === fromIndex', item.title)
+              const newItem = { ...item }
+              newItem.position.row = toIndex
+              return newItem
+            } else if (index > fromIndex && index <= toIndex) {
+              // console.log('index > fromIndex && index < toIndex', item.title)
+              const newItem = { ...item }
+              newItem.position.row = newItem.position.row - 1
+              return newItem
+            } else {
+              return item
+            }
+          })
+          // console.log('computedColumn', computedColumn)
+          const sorttedColumn = computedColumn.sort(ascendingSortColumn)
+          setColumn(sorttedColumn)
 
-        if (onOrderChange) {
-          onOrderChange(id, sorttedColumn)
+          if (onOrderChange) {
+            onOrderChange(id, sorttedColumn)
+          }
+        } else if (fromIndex > toIndex) {
+          const computedColumn = column.map((item, index) => {
+            if (index === fromIndex) {
+              // console.log('index === fromIndex', item.title)
+              const newItem = { ...item }
+              newItem.position.row = toIndex
+              return newItem
+            } else if (index >= toIndex && index < fromIndex) {
+              // console.log('index >= toIndex && index < fromIndex', item.title)
+              const newItem = { ...item }
+              newItem.position.row = newItem.position.row + 1
+              return newItem
+            } else {
+              return item
+            }
+          })
+          // console.log('computedColumn', computedColumn)
+          const sorttedColumn = computedColumn.sort(ascendingSortColumn)
+          setColumn(sorttedColumn)
+
+          if (onOrderChange) {
+            onOrderChange(id, sorttedColumn)
+          }
         }
       } else {
         if (onChangeColumn) {
