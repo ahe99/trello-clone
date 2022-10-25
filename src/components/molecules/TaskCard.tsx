@@ -20,7 +20,7 @@ export interface TaskCardProps {
   data: CardContent
   onDragEnter: (e: DragEvent<HTMLDivElement>, position: Position) => void
   onDragStart: (e: DragEvent<HTMLDivElement>, position: Position) => void
-  onDragEnd: () => void
+  onDragEnd: (e: DragEvent<HTMLDivElement>, position: Position) => void
 }
 
 export const TaskCard: FC<TaskCardProps> = ({
