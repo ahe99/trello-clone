@@ -1,48 +1,118 @@
-import React from 'react'
+import React, { useState, useRef } from 'react'
+import type { DragEvent } from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
-import { TaskCard } from '@components/molecules'
-import type { CardContent } from '@components/molecules'
+import type { CardData } from '@utils/CardData'
+import type { Position } from '@utils/Position'
 
 import { TaskColumn } from './TaskColumn'
-// More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
+
 export default {
   title: 'organisms/TaskColumn',
   component: TaskColumn,
-  // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
   argTypes: {},
 } as ComponentMeta<typeof TaskColumn>
-
-// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof TaskColumn> = (args) => (
-  <TaskColumn {...args} />
-)
 
 const mockData = [
   {
     title: 'test card 1',
     description: 'test card 1',
     types: ['test type'],
-    position: { row: 0, column: 0 },
+    position: { x: 0, y: 0 },
   },
   {
     title: 'test card 2',
     description: 'test card 2',
     types: ['test type'],
-    position: { row: 1, column: 0 },
+    position: { x: 0, y: 1 },
   },
   {
     title: 'test card 3',
     description: 'test card 3',
     types: ['test type'],
-    position: { row: 2, column: 0 },
+    position: { x: 0, y: 2 },
   },
 ]
 
+const ascendingSortColumn = (a: CardData, b: CardData) => {
+  return a.position.y - b.position.y
+}
+
+const Template: ComponentStory<typeof TaskColumn> = (args) => {
+  const [column, setColumn] = useState<CardData[]>(mockData)
+  const from = useRef<Position | null>(null)
+  const to = useRef<Position | null>(null)
+
+  const handleDragStart = (id: number, position: Position) => {
+    from.current = position
+    // console.log('from', from.current)
+  }
+
+  const handleDrop = (id: number, position: Position) => {
+    to.current = position
+    // console.log('from', from.current)
+    // console.log('to', to.current)
+
+    if (from.current && to.current) {
+      const fromIndex = from.current.y
+      const toIndex = to.current.y
+
+      if (fromIndex < toIndex) {
+        const computedColumn = column.map((item, index) => {
+          if (index === fromIndex) {
+            // console.log('index === fromIndex', item.title)
+            const newItem = { ...item }
+            newItem.position.y = toIndex
+            return newItem
+          } else if (index > fromIndex && index <= toIndex) {
+            // console.log('index > fromIndex && index < toIndex', item.title)
+            const newItem = { ...item }
+            newItem.position.y = newItem.position.y - 1
+            return newItem
+          } else {
+            return item
+          }
+        })
+        // console.log('computedColumn', computedColumn)
+        const sorttedColumn = computedColumn.sort(ascendingSortColumn)
+        setColumn(sorttedColumn)
+      } else if (fromIndex > toIndex) {
+        const computedColumn = column.map((item, index) => {
+          if (index === fromIndex) {
+            // console.log('index === fromIndex', item.title)
+            const newItem = { ...item }
+            newItem.position.y = toIndex
+            return newItem
+          } else if (index >= toIndex && index < fromIndex) {
+            // console.log('index >= toIndex && index < fromIndex', item.title)
+            const newItem = { ...item }
+            newItem.position.y = newItem.position.y + 1
+            return newItem
+          } else {
+            return item
+          }
+        })
+        // console.log('computedColumn', computedColumn)
+        const sorttedColumn = computedColumn.sort(ascendingSortColumn)
+        setColumn(sorttedColumn)
+      }
+      from.current = null
+      to.current = null
+    }
+  }
+
+  return (
+    <TaskColumn
+      {...args}
+      data={column}
+      onDragStart={handleDragStart}
+      onDrop={handleDrop}
+    />
+  )
+}
 export const Default = Template.bind({})
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Default.args = {
   id: 0,
   title: 'test column 1',
-  data: mockData,
 }

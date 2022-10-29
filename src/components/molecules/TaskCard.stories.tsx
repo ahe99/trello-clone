@@ -23,13 +23,16 @@ Default.args = {
     title: 'test card 1',
     description: 'test card 1',
     types: ['test type'],
-    position: { row: 0, column: 0 },
+    position: { x: 0, y: 0 },
   },
   onDragEnter: (e, position) => {
     console.log('onDragEnter', position)
   },
   onDragStart: (e, position) => {
     console.log('onDragStart', position)
+  },
+  onDrop: (e, position) => {
+    console.log('onDrop', position)
   },
   onDragEnd: () => {},
 }

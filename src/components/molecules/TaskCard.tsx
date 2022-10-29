@@ -1,26 +1,16 @@
 import React from 'react'
 import type { FC, DragEvent } from 'react'
 
-type CardTheme = {}
-
-export type Position = {
-  row: number
-  column: number
-}
-
-export type CardContent = {
-  title: string
-  description: string
-  types?: string[]
-  position: Position
-}
+import type { CardData } from '@utils/CardData'
+import type { Position } from '@utils/Position'
 
 export interface TaskCardProps {
   className?: string
-  data: CardContent
-  onDragEnter: (e: DragEvent<HTMLDivElement>, position: Position) => void
-  onDragStart: (e: DragEvent<HTMLDivElement>, position: Position) => void
-  onDragEnd: (e: DragEvent<HTMLDivElement>, position: Position) => void
+  data: CardData
+  onDragEnter?: (e: DragEvent<HTMLDivElement>, position: Position) => void
+  onDragStart?: (e: DragEvent<HTMLDivElement>, position: Position) => void
+  onDragEnd?: (e: DragEvent<HTMLDivElement>, position: Position) => void
+  onDrop?: (e: DragEvent<HTMLDivElement>, position: Position) => void
 }
 
 export const TaskCard: FC<TaskCardProps> = ({
@@ -29,6 +19,7 @@ export const TaskCard: FC<TaskCardProps> = ({
   onDragEnter = () => {},
   onDragStart = () => {},
   onDragEnd = () => {},
+  onDrop = () => {},
 }) => {
   return (
     <div
@@ -36,6 +27,7 @@ export const TaskCard: FC<TaskCardProps> = ({
       onDragStart={(e) => onDragStart(e, position)}
       onDragEnter={(e) => onDragEnter(e, position)}
       onDragEnd={(e) => onDragEnd(e, position)}
+      onDrop={(e) => onDrop(e, position)}
       onDragOver={(e) => e.preventDefault()}
       className="w-56 h-68 border-solid border-2 rounded-md flex flex-col cursor-pointer hover:bg-slate-200"
     >
