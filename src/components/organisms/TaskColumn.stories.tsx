@@ -4,6 +4,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react'
 
 import type { CardData } from '@utils/CardData'
 import type { Position } from '@utils/Position'
+import { sortAscendingColumn } from '@helpers/card'
 
 import { TaskColumn } from './TaskColumn'
 
@@ -33,10 +34,6 @@ const mockData = [
     position: { x: 0, y: 2 },
   },
 ]
-
-const ascendingSortColumn = (a: CardData, b: CardData) => {
-  return a.position.y - b.position.y
-}
 
 const Template: ComponentStory<typeof TaskColumn> = (args) => {
   const [column, setColumn] = useState<CardData[]>(mockData)
@@ -74,7 +71,7 @@ const Template: ComponentStory<typeof TaskColumn> = (args) => {
           }
         })
         // console.log('computedColumn', computedColumn)
-        const sorttedColumn = computedColumn.sort(ascendingSortColumn)
+        const sorttedColumn = sortAscendingColumn(computedColumn)
         setColumn(sorttedColumn)
       } else if (fromIndex > toIndex) {
         const computedColumn = column.map((item, index) => {
@@ -93,7 +90,7 @@ const Template: ComponentStory<typeof TaskColumn> = (args) => {
           }
         })
         // console.log('computedColumn', computedColumn)
-        const sorttedColumn = computedColumn.sort(ascendingSortColumn)
+        const sorttedColumn = sortAscendingColumn(computedColumn)
         setColumn(sorttedColumn)
       }
       from.current = null
