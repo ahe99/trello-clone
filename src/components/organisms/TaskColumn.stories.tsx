@@ -1,7 +1,13 @@
-import React, { useState, useRef } from 'react'
-import type { DragEvent } from 'react'
+import React, { useState } from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
+import { DropResult, DragDropContext } from 'react-beautiful-dnd'
 
+import {
+  isSamePosition,
+  isSameColumn,
+  moveInSameColumn,
+  moveBetweenColumns,
+} from '@helpers/cards'
 import type { CardData } from '@utils/Data'
 
 import { TaskColumn } from './TaskColumn'
@@ -36,11 +42,28 @@ const mockData = [
 const Template: ComponentStory<typeof TaskColumn> = (args) => {
   const [column, setColumn] = useState<CardData[]>(mockData)
 
-  const handleDragEnd = (newColumn: CardData[]) => {
-    setColumn(newColumn)
+  const handleDragEnd = (result: DropResult) => {
+    const { source, destination } = result
+
+    const hasDestination = !!destination
+    if (isSamePosition(source, destination) || !hasDestination) {
+      return
+    }
+
+    //always true since we have only one column here
+    if (isSameColumn(source, destination)) {
+      const newColumn = moveInSameColumn(column, source, destination)
+      setColumn(newColumn)
+    } else {
+      //...
+    }
   }
 
-  return <TaskColumn {...args} data={column} onDragEnd={handleDragEnd} />
+  return (
+    <DragDropContext onDragEnd={handleDragEnd}>
+      <TaskColumn {...args} data={column} />
+    </DragDropContext>
+  )
 }
 export const Default = Template.bind({})
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
