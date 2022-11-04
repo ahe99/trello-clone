@@ -4,7 +4,6 @@ import { Droppable, DragDropContext } from 'react-beautiful-dnd'
 import type { DropResult } from 'react-beautiful-dnd'
 
 import type { CardData } from '@utils/CardData'
-import type { Position } from '@utils/Position'
 
 import { TaskCard } from '@components/molecules'
 
@@ -49,21 +48,21 @@ export const TaskColumn: FC<TaskColumnProps> = ({
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="w-60 bg-primary-200 flex flex-col items-center border-solid border-2 rounded-md">
       <div>{title}</div>
-      <hr />
-      <br />
       <DragDropContext onDragEnd={handleDragEnd}>
         <Droppable droppableId={id}>
           {(provided, snapshot) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
               {data.map((item, i) => (
                 <TaskCard.Draggble
-                  key={i}
+                  key={item.id}
                   index={i}
                   data={item}
+                  className="mb-2"
                 />
               ))}
+              {provided.placeholder}
             </div>
           )}
         </Droppable>
