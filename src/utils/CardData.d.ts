@@ -1,8 +1,7 @@
-import type { Position } from "@utils/Position"
 
 export type CardData = {
+  id: string
   title: string
   description: string
   types?: string[]
-  position: Position
 }

@@ -1,5 +1,7 @@
 import React from 'react'
 import type { FC, DragEvent } from 'react'
+import { Droppable, DragDropContext } from 'react-beautiful-dnd'
+import type { DropResult } from 'react-beautiful-dnd'
 
 import type { CardData } from '@utils/CardData'
 import type { Position } from '@utils/Position'
@@ -7,55 +9,42 @@ import type { Position } from '@utils/Position'
 import { TaskCard } from '@components/molecules'
 
 type ColumnType = {
-  id: number
+  id: string
   title: string
 }
 
 export interface TaskColumnProps extends ColumnType {
   data: CardData[]
-  onDragStart?: (columnId: number, position: Position) => void
-  onDragEnter?: (columnId: number, position: Position) => void
-  onDragEnd?: (columnId: number, position: Position) => void
-  onDrop?: (columnId: number, position: Position) => void
+  onDragEnd?: (newColumn: CardData[]) => void
 }
 
 export const TaskColumn: FC<TaskColumnProps> = ({
   title,
   id,
   data,
-  onDragStart,
-  onDragEnter,
+  // onDragEnd,
+  // onDragStart,
+  // onDragEnter,
   onDragEnd,
-  onDrop,
+  // onDrop,
 }) => {
-  const handleDragStart = (
-    e: DragEvent<HTMLDivElement>,
-    position: Position
-  ) => {
-    if (onDragStart) {
-      onDragStart(id, position)
-    }
-    //...
-  }
+  const handleDragEnd = (result: DropResult) => {
+    const { source, destination } = result
 
-  const handleDragEnter = (
-    e: DragEvent<HTMLDivElement>,
-    position: Position
-  ) => {
-    if (onDragEnter) {
-      onDragEnter(id, position)
+    const hasDestination = !!destination
+    const isSamePosition =
+      source.droppableId === destination?.droppableId &&
+      source.index === destination?.index
+    if (isSamePosition || !hasDestination) {
+      return
     }
-  }
 
-  const handleDragEnd = (e: DragEvent<HTMLDivElement>, position: Position) => {
+    const newData: CardData[] = [...data]
+    const [draggedItem] = newData.splice(source.index, 1)
+    newData.splice(destination.index, 0, draggedItem)
+
     if (onDragEnd) {
-      onDragEnd(id, position)
-    }
-  }
-
-  const handleDrop = (e: DragEvent<HTMLDivElement>, position: Position) => {
-    if (onDrop) {
-      onDrop(id, position)
+      onDragEnd(newData)
     }
   }
 
@@ -64,16 +53,21 @@ export const TaskColumn: FC<TaskColumnProps> = ({
       <div>{title}</div>
       <hr />
       <br />
-      {data.map((item) => (
-        <TaskCard
-          key={item.position.y}
-          data={item}
-          onDragStart={handleDragStart}
-          onDragEnter={handleDragEnter}
-          onDragEnd={handleDragEnd}
-          onDrop={handleDrop}
-        />
-      ))}
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <Droppable droppableId={id}>
+          {(provided, snapshot) => (
+            <div {...provided.droppableProps} ref={provided.innerRef}>
+              {data.map((item, i) => (
+                <TaskCard.Draggble
+                  key={i}
+                  index={i}
+                  data={item}
+                />
+              ))}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
     </div>
   )
 }

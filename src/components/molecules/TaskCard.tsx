@@ -1,35 +1,47 @@
 import React from 'react'
 import type { FC, DragEvent } from 'react'
+import { Draggable } from 'react-beautiful-dnd'
 
 import type { CardData } from '@utils/CardData'
-import type { Position } from '@utils/Position'
 
 export interface TaskCardProps {
   className?: string
   data: CardData
-  onDragEnter?: (e: DragEvent<HTMLDivElement>, position: Position) => void
-  onDragStart?: (e: DragEvent<HTMLDivElement>, position: Position) => void
-  onDragEnd?: (e: DragEvent<HTMLDivElement>, position: Position) => void
-  onDrop?: (e: DragEvent<HTMLDivElement>, position: Position) => void
 }
 
-export const TaskCard: FC<TaskCardProps> = ({
+const DraggableTaskCard: FC<TaskCardProps & { index: number }> = ({
   className,
-  data: { title, description, types, position },
-  onDragEnter = () => {},
-  onDragStart = () => {},
-  onDragEnd = () => {},
-  onDrop = () => {},
+  index,
+  data: { id, title, description, types },
+}) => {
+  return (
+    <Draggable draggableId={String(id)} index={index}>
+      {(provided, snapshot) => (
+        <div
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          ref={provided.innerRef}
+          className={`w-56 h-68 border-solid border-2 rounded-md flex flex-col cursor-pointer hover:bg-slate-200 ${className}`}
+        >
+          <div className="border-b-2 self-stretch flex justify-start">
+            <div className="font-bold">{title}</div>
+          </div>
+          <div className="flex-1">
+            <div>{description}</div>
+          </div>
+        </div>
+      )}
+    </Draggable>
+  )
+}
+
+const StaticTaskCard: FC<TaskCardProps> = ({
+  className,
+  data: { id, title, description, types },
 }) => {
   return (
     <div
-      draggable
-      onDragStart={(e) => onDragStart(e, position)}
-      onDragEnter={(e) => onDragEnter(e, position)}
-      onDragEnd={(e) => onDragEnd(e, position)}
-      onDrop={(e) => onDrop(e, position)}
-      onDragOver={(e) => e.preventDefault()}
-      className="w-56 h-68 border-solid border-2 rounded-md flex flex-col cursor-pointer hover:bg-slate-200"
+      className={`w-56 h-68 border-solid border-2 rounded-md flex flex-col cursor-pointer hover:bg-slate-200 ${className}`}
     >
       <div className="border-b-2 self-stretch flex justify-start">
         <div className="font-bold">{title}</div>
@@ -41,4 +53,7 @@ export const TaskCard: FC<TaskCardProps> = ({
   )
 }
 
-TaskCard.displayName = 'TaskCard'
+export const TaskCard = {
+  Static: StaticTaskCard,
+  Draggble: DraggableTaskCard,
+}

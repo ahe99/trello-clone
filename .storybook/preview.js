@@ -1,8 +1,11 @@
 import '../styles/globals.css'
+import { DragDropContext } from 'react-beautiful-dnd'
 
 export const decorators = [
   (Story) => {
-    return <Story />
+    return (
+        <Story />
+    )
   },
 ]
 
