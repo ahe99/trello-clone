@@ -3,17 +3,12 @@ import type { FC, DragEvent } from 'react'
 import { Droppable, DragDropContext } from 'react-beautiful-dnd'
 import type { DropResult } from 'react-beautiful-dnd'
 
-import type { CardData } from '@utils/CardData'
+import { moveInSameColumn } from '@helpers/cards'
+import type { ColumnData, CardData } from '@utils/Data'
 
 import { TaskCard } from '@components/molecules'
 
-type ColumnType = {
-  id: string
-  title: string
-}
-
-export interface TaskColumnProps extends ColumnType {
-  data: CardData[]
+export interface TaskColumnProps extends ColumnData {
   onDragEnd?: (newColumn: CardData[]) => void
 }
 
@@ -28,6 +23,7 @@ export const TaskColumn: FC<TaskColumnProps> = ({
   // onDrop,
 }) => {
   const handleDragEnd = (result: DropResult) => {
+    console.log('result', result)
     const { source, destination } = result
 
     const hasDestination = !!destination
@@ -37,10 +33,7 @@ export const TaskColumn: FC<TaskColumnProps> = ({
     if (isSamePosition || !hasDestination) {
       return
     }
-
-    const newData: CardData[] = [...data]
-    const [draggedItem] = newData.splice(source.index, 1)
-    newData.splice(destination.index, 0, draggedItem)
+    const newData = moveInSameColumn(data, source, destination)
 
     if (onDragEnd) {
       onDragEnd(newData)
@@ -48,8 +41,8 @@ export const TaskColumn: FC<TaskColumnProps> = ({
   }
 
   return (
-    <div className="w-60 bg-primary-200 flex flex-col items-center border-solid border-2 rounded-md">
-      <div>{title}</div>
+    <div className="w-60  bg-primary-200 flex flex-col border-solid border-2 rounded-md">
+      <div className="mx-4 mt-2">{title}</div>
       <DragDropContext onDragEnd={handleDragEnd}>
         <Droppable droppableId={id}>
           {(provided, snapshot) => (

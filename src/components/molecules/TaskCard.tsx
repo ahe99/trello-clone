@@ -2,14 +2,15 @@ import React from 'react'
 import type { FC, DragEvent } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 
-import type { CardData } from '@utils/CardData'
+import type { CardData } from '@utils/Data'
 
 export interface TaskCardProps {
   className?: string
   data: CardData
+  index: number
 }
 
-const DraggableTaskCard: FC<TaskCardProps & { index: number }> = ({
+const DraggableTaskCard: FC<TaskCardProps> = ({
   className,
   index,
   data: { id, title, description, types },

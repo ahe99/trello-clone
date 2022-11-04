@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react'
 import type { DragEvent } from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
-import type { CardData } from '@utils/CardData'
+import type { CardData } from '@utils/Data'
 
 import { TaskColumn } from './TaskColumn'
 
