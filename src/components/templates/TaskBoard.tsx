@@ -26,7 +26,6 @@ export const TaskBoard: FC<TaskBoardProps> = ({
 }) => {
   const handleDragEnd = (result: DropResult) => {
     const { source, destination } = result
-    console.log(destination)
     const hasDestination = !!destination
     if (!hasDestination || isSamePosition(source, destination)) {
       return
@@ -61,7 +60,6 @@ export const TaskBoard: FC<TaskBoardProps> = ({
   return (
     <DragDropContext
       onDragEnd={handleDragEnd}
-      onDragStart={(inital) => console.log(inital)}
     >
       <div className={`flex flex-row ${className}`}>
         {data.map((item) => (
