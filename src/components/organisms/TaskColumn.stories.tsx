@@ -2,12 +2,7 @@ import React, { useState } from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import { DropResult, DragDropContext } from 'react-beautiful-dnd'
 
-import {
-  isSamePosition,
-  isSameColumn,
-  moveInSameColumn,
-  moveBetweenColumns,
-} from '@helpers/cards'
+import { isSamePosition, isSameColumn, moveInSameColumn } from '@helpers/cards'
 import type { CardData } from '@utils/Data'
 
 import { TaskColumn } from './TaskColumn'
@@ -46,7 +41,7 @@ const Template: ComponentStory<typeof TaskColumn> = (args) => {
     const { source, destination } = result
 
     const hasDestination = !!destination
-    if (isSamePosition(source, destination) || !hasDestination) {
+    if (!hasDestination || isSamePosition(source, destination)) {
       return
     }
 
