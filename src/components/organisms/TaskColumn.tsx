@@ -20,9 +20,9 @@ export const TaskColumn: FC<TaskColumnProps> = ({
 }) => {
   return (
     <div
-      className={`w-60 h-max bg-primary-200 flex flex-col items-center border-solid border-2 rounded-md ${className}`}
+      className={`h-max px-2 bg-primary-200 flex flex-col border-solid border-2 rounded-md ${className}`}
     >
-      <div className="mx-4 mt-2 self-start">{title}</div>
+      <div className={`mx-4 my-2 self-start `}>{title}</div>
       <Droppable droppableId={id}>
         {(provided, snapshot) => (
           <div {...provided.droppableProps} ref={provided.innerRef}>
@@ -32,7 +32,6 @@ export const TaskColumn: FC<TaskColumnProps> = ({
                 index={i}
                 data={item}
                 className="mb-2"
-                
               />
             ))}
             {provided.placeholder}
