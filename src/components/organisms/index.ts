@@ -1,1 +1,1 @@
-export * from './TaskColumn'
+export * from "./TaskColumn";

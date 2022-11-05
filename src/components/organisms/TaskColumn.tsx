@@ -1,17 +1,17 @@
-import React from 'react'
-import type { FC } from 'react'
-import { Draggable, Droppable } from 'react-beautiful-dnd'
+import React from "react";
+import type { FC } from "react";
+import { Draggable, Droppable } from "react-beautiful-dnd";
 
-import { DROP_TYPE } from '@helpers/constants'
-import { getDraggableColumnId, getDroppableColumnId } from '@helpers/position'
-import type { ColumnData, CardData } from '@utils/Data'
+import { DROP_TYPE } from "@helpers/constants";
+import { getDraggableColumnId, getDroppableColumnId } from "@helpers/position";
+import type { ColumnData, CardData } from "@utils/Data";
 
-import { TaskCard } from '@components/molecules'
+import { TaskCard } from "@components/molecules";
 
 export interface TaskColumnProps extends ColumnData {
-  className?: string
-  index: number
-  onDragEnd?: (newColumn: CardData[]) => void
+  className?: string;
+  index: number;
+  onDragEnd?: (newColumn: CardData[]) => void;
 }
 
 export const TaskColumn: FC<TaskColumnProps> = ({
@@ -28,7 +28,9 @@ export const TaskColumn: FC<TaskColumnProps> = ({
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
-          className={`h-max px-2 bg-primary-200 flex flex-col border-solid border-2 rounded-md ${className}`}
+          className={`flex h-max  flex-col rounded-md border-2 border-solid border-primary-800 bg-primary-200 px-2 hover:brightness-110 ${
+            snapshot.isDragging ? "brightness-110" : "brightness-100"
+          } ${className}`}
         >
           <div className={`mx-4 my-2 self-start `}>{title}</div>
           <Droppable
@@ -57,5 +59,5 @@ export const TaskColumn: FC<TaskColumnProps> = ({
         </div>
       )}
     </Draggable>
-  )
-}
+  );
+};

@@ -1,5 +1,5 @@
-import '../styles/globals.css'
-import { DragDropContext } from 'react-beautiful-dnd'
+import "../styles/globals.css";
+import { DragDropContext } from "react-beautiful-dnd";
 
 export const decorators = [
   (Story) => {
@@ -7,12 +7,12 @@ export const decorators = [
       <div className="flex">
         <Story />
       </div>
-    )
+    );
   },
-]
+];
 
 export const parameters = {
-  actions: { argTypesRegex: '^on[A-Z].*' },
+  actions: { argTypesRegex: "^on[A-Z].*" },
 
   controls: {
     matchers: {
@@ -21,19 +21,19 @@ export const parameters = {
     },
   },
   backgrounds: {
-    default: 'base',
+    default: "base",
     values: [
       {
-        name: 'base',
-        value: '#f5f5f5',
+        name: "base",
+        value: "#f5f5f5",
       },
       {
-        name: 'light',
-        value: '#ffffff',
+        name: "light",
+        value: "#ffffff",
       },
       {
-        name: 'dark',
-        value: 'rgb(51, 51, 51)',
+        name: "dark",
+        value: "rgb(51, 51, 51)",
       },
     ],
   },
@@ -41,18 +41,18 @@ export const parameters = {
   options: {
     storySort: {
       includeName: true,
-      method: '',
-      order: ['atoms', 'molecules', 'organisms', 'templates', 'pages'],
+      method: "",
+      order: ["atoms", "molecules", "organisms", "templates", "pages"],
     },
   },
-}
+};
 
 // Add support for Next.js `NextImage` component feature
-import * as NextImage from 'next/image'
+import * as NextImage from "next/image";
 
-const OriginalNextImage = NextImage.default
+const OriginalNextImage = NextImage.default;
 
-Object.defineProperty(NextImage, 'default', {
+Object.defineProperty(NextImage, "default", {
   configurable: true,
   value: (props) => <OriginalNextImage {...props} unoptimized />,
-})
+});
