@@ -56,8 +56,17 @@ const Template: ComponentStory<typeof TaskBoard> = (args) => {
   const handleDragEnd = (newBoard: ColumnData[]) => {
     setData(newBoard);
   };
-
-  return <TaskBoard {...args} data={data} onDragEnd={handleDragEnd} />;
+  const handleCreateCard = (newBoard: ColumnData[]) => {
+    setData(newBoard);
+  };
+  return (
+    <TaskBoard
+      {...args}
+      data={data}
+      onDragEnd={handleDragEnd}
+      onCreateCard={handleCreateCard}
+    />
+  );
 };
 export const Default = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args

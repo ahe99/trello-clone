@@ -2,7 +2,11 @@ import React, { useState, useRef } from "react";
 import type { FC } from "react";
 import { Droppable, DropResult, DragDropContext } from "react-beautiful-dnd";
 
-import { moveInSameColumn, moveBetweenColumns } from "@helpers/cards";
+import {
+  moveInSameColumn,
+  moveBetweenColumns,
+  createCard,
+} from "@helpers/cards";
 import { moveInSameBoard } from "@helpers/column";
 import {
   isSameDraggable,
@@ -18,6 +22,7 @@ import { TaskColumn } from "@components/organisms";
 export interface TaskBoardProps extends BoardData {
   className?: string;
   onDragEnd?: (newData: ColumnData[]) => void;
+  onCreateCard?: (newData: ColumnData[]) => void;
 }
 
 export const TaskBoard: FC<TaskBoardProps> = ({
@@ -26,7 +31,25 @@ export const TaskBoard: FC<TaskBoardProps> = ({
   title,
   data,
   onDragEnd,
+  onCreateCard,
 }) => {
+  const handleCreateCard = (columnId: string) => {
+    const newData = data.map((item) => {
+      if (item.id === columnId) {
+        const newColumn = createCard(item.data);
+        return {
+          ...item,
+          data: newColumn,
+        };
+      } else {
+        return item;
+      }
+    });
+    if (onCreateCard) {
+      onCreateCard(newData);
+    }
+  };
+
   const handleDragEnd = (result: DropResult) => {
     const { source, destination, type } = result;
     let newData = [...data];
@@ -72,7 +95,7 @@ export const TaskBoard: FC<TaskBoardProps> = ({
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <div
-        className={`grow-0 rounded-md border-2 border-solid border-primary-800 bg-primary-100 ${className}`}
+        className={`grow-0 rounded-md border-2 border-solid border-primary-800 bg-primary-100 p-2 pr-0 ${className}`}
       >
         <Droppable
           droppableId={getDroppableBoardId(id)}
@@ -89,10 +112,11 @@ export const TaskBoard: FC<TaskBoardProps> = ({
                 <TaskColumn
                   key={item.id}
                   index={index}
-                  className="m-2"
+                  className="mr-2"
                   title={item.title}
                   id={item.id}
                   data={item.data}
+                  onCreateCard={handleCreateCard}
                 />
               ))}
               {provided.placeholder}

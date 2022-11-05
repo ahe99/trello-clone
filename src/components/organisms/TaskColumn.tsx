@@ -6,12 +6,13 @@ import { DROP_TYPE } from "@helpers/constants";
 import { getDraggableColumnId, getDroppableColumnId } from "@helpers/position";
 import type { ColumnData, CardData } from "@utils/Data";
 
+import { Button } from "@components/atoms";
 import { TaskCard } from "@components/molecules";
 
 export interface TaskColumnProps extends ColumnData {
   className?: string;
   index: number;
-  onDragEnd?: (newColumn: CardData[]) => void;
+  onCreateCard: (id: string) => void;
 }
 
 export const TaskColumn: FC<TaskColumnProps> = ({
@@ -20,7 +21,14 @@ export const TaskColumn: FC<TaskColumnProps> = ({
   id,
   index,
   data,
+  onCreateCard,
 }) => {
+  const handleCreateCard = () => {
+    if (onCreateCard) {
+      onCreateCard(id);
+    }
+  };
+
   return (
     <Draggable draggableId={getDraggableColumnId(id)} index={index}>
       {(provided, snapshot) => (
@@ -28,11 +36,11 @@ export const TaskColumn: FC<TaskColumnProps> = ({
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
-          className={`flex h-max  flex-col rounded-md border-2 border-solid border-primary-800 bg-primary-200 px-2 hover:brightness-110 ${
-            snapshot.isDragging ? "brightness-110" : "brightness-100"
+          className={`flex h-max flex-col rounded-md border-2 border-solid border-primary-800 bg-primary-200 px-2 hover:bg-primary-100 hover:shadow-lg ${
+            snapshot.isDragging ? "shadow-lg" : "shadow-none"
           } ${className}`}
         >
-          <div className={`mx-4 my-2 self-start `}>{title}</div>
+          <div className={`mx-4 my-2 self-start text-primary-900`}>{title}</div>
           <Droppable
             droppableId={getDroppableColumnId(id)}
             type={DROP_TYPE.CARD}
@@ -53,6 +61,12 @@ export const TaskColumn: FC<TaskColumnProps> = ({
                   />
                 ))}
                 {provided.placeholder}
+                <Button
+                  onClick={handleCreateCard}
+                  className="mb-2 flex h-6 w-56 items-center justify-center rounded-md border-2 border-solid bg-primary-500 text-center text-xl text-primary-900 hover:bg-primary-400"
+                >
+                  +
+                </Button>
               </div>
             )}
           </Droppable>

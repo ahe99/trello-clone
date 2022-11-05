@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { Droppable, DropResult, DragDropContext } from "react-beautiful-dnd";
 
 import { DROP_TYPE } from "@helpers/constants";
-import { moveInSameColumn } from "@helpers/cards";
+import { createCard, moveInSameColumn } from "@helpers/cards";
 import type { CardData } from "@utils/Data";
 
 import { TaskColumn } from "./TaskColumn";
@@ -39,6 +39,11 @@ const mockData = [
 const Template: ComponentStory<typeof TaskColumn> = (args) => {
   const [column, setColumn] = useState<CardData[]>(mockData);
 
+  const handleCreateCard = (id: string) => {
+    const newColumn = createCard(column);
+    setColumn(newColumn);
+  };
+
   const handleDragEnd = (result: DropResult) => {
     const { source, destination } = result;
 
@@ -70,7 +75,12 @@ const Template: ComponentStory<typeof TaskColumn> = (args) => {
             ref={provided.innerRef}
             className="flex flex-row"
           >
-            <TaskColumn {...args} data={column} index={0} />
+            <TaskColumn
+              {...args}
+              data={column}
+              index={0}
+              onCreateCard={handleCreateCard}
+            />
             {provided.placeholder}
           </div>
         )}
