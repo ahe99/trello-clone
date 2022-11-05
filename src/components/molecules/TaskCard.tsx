@@ -2,6 +2,7 @@ import React from 'react'
 import type { FC, DragEvent } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 
+import { getDraggableCardId } from '@helpers/position'
 import type { CardData } from '@utils/Data'
 
 export interface TaskCardProps {
@@ -16,7 +17,7 @@ const DraggableTaskCard: FC<TaskCardProps> = ({
   data: { id, title, description, types },
 }) => {
   return (
-    <Draggable draggableId={id} index={index}>
+    <Draggable draggableId={getDraggableCardId(id)} index={index}>
       {(provided, snapshot) => (
         <div
           {...provided.draggableProps}

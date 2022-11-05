@@ -4,7 +4,9 @@ import { DragDropContext } from 'react-beautiful-dnd'
 export const decorators = [
   (Story) => {
     return (
+      <div className="flex">
         <Story />
+      </div>
     )
   },
 ]

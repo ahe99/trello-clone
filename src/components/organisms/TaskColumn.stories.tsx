@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
-import { DropResult, DragDropContext } from 'react-beautiful-dnd'
+import { Droppable, DropResult, DragDropContext } from 'react-beautiful-dnd'
 
-import { isSamePosition, isSameColumn, moveInSameColumn } from '@helpers/cards'
+import { DROP_TYPE } from '@helpers/constants'
+import { moveInSameColumn } from '@helpers/cards'
 import type { CardData } from '@utils/Data'
 
 import { TaskColumn } from './TaskColumn'
+import { inSameDroppable, isSameDraggable } from '@helpers/position'
 
 export default {
   title: 'organisms/TaskColumn',
@@ -41,12 +43,12 @@ const Template: ComponentStory<typeof TaskColumn> = (args) => {
     const { source, destination } = result
 
     const hasDestination = !!destination
-    if (!hasDestination || isSamePosition(source, destination)) {
+    if (!hasDestination || isSameDraggable(source, destination)) {
       return
     }
 
     //always true since we have only one column here
-    if (isSameColumn(source, destination)) {
+    if (inSameDroppable(source, destination)) {
       const newColumn = moveInSameColumn(column, source, destination)
       setColumn(newColumn)
     } else {
@@ -56,7 +58,23 @@ const Template: ComponentStory<typeof TaskColumn> = (args) => {
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      <TaskColumn {...args} data={column} />
+      <Droppable
+        droppableId={'0'}
+        type={DROP_TYPE.COLUMN}
+        direction="horizontal"
+        isDropDisabled={true}
+      >
+        {(provided, snapshot) => (
+          <div
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+            className="flex flex-row"
+          >
+            <TaskColumn {...args} data={column} index={0} />
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
     </DragDropContext>
   )
 }
