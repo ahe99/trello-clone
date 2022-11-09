@@ -12,6 +12,7 @@
     "build-storybook": "build-storybook -s ./public"
   },
   "dependencies": {
+    "@icon-park/react": "^1.4.2",
     "@storybook/addons": "^6.5.12",
     "@storybook/theming": "^6.5.12",
     "moment": "^2.29.4",
