@@ -1,10 +1,11 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { Droppable, DropResult, DragDropContext } from "react-beautiful-dnd";
 
 import { TaskCard } from "./TaskCard";
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 
-const TaskCardBase = TaskCard.Static;
+const TaskCardBase = TaskCard.Draggble;
 export default {
   title: "molecules/TaskCard",
   component: TaskCardBase,
@@ -14,7 +15,19 @@ export default {
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof TaskCardBase> = (args) => (
-  <TaskCardBase {...args} />
+  <DragDropContext onDragEnd={console.log}>
+    <Droppable droppableId="0">
+      {(provided, snapshot) => (
+        <div
+          {...provided.droppableProps}
+          ref={provided.innerRef}
+          className="flex flex-row"
+        >
+          <TaskCardBase {...args} />
+        </div>
+      )}
+    </Droppable>
+  </DragDropContext>
 );
 
 export const Default = Template.bind({});
