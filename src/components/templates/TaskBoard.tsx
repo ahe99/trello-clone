@@ -136,8 +136,11 @@ export const TaskBoard: FC<TaskBoardProps> = ({
           )}
         </Droppable>
 
-        <Button onClick={handleCreateColumn}>
-          <Icon type="Add" size="3rem" />
+        <Button
+          className="mb-2 mr-2 flex h-full w-6 items-center justify-center rounded-md bg-primary-500 text-center text-xl text-primary-900 opacity-40 hover:border-2 hover:border-solid hover:opacity-100"
+          onClick={handleCreateColumn}
+        >
+          +
         </Button>
       </div>
     </DragDropContext>

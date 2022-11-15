@@ -4,7 +4,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import type { ColumnData } from "@utils/Data";
 
 import { TaskBoard } from "./TaskBoard";
-import moment from "moment";
+
 export default {
   title: "templates/TaskBoard",
   component: TaskBoard,
