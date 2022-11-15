@@ -7,7 +7,7 @@ import {
   moveBetweenColumns,
   createCard,
 } from "@helpers/cards";
-import { moveInSameBoard } from "@helpers/column";
+import { createColumn, moveInSameBoard } from "@helpers/column";
 import {
   isSameDraggable,
   inSameDroppable,
@@ -18,11 +18,13 @@ import { BoardData, ColumnData } from "@utils/Data";
 import { DROP_TYPE } from "@helpers/constants";
 
 import { TaskColumn } from "@components/organisms";
+import { Button, Icon } from "@components/atoms";
 
 export interface TaskBoardProps extends BoardData {
   className?: string;
   onDragEnd?: (newData: ColumnData[]) => void;
   onCreateCard?: (newData: ColumnData[]) => void;
+  onCreateColumn?: (newData: ColumnData[]) => void;
 }
 
 export const TaskBoard: FC<TaskBoardProps> = ({
@@ -32,11 +34,13 @@ export const TaskBoard: FC<TaskBoardProps> = ({
   data,
   onDragEnd,
   onCreateCard,
+  onCreateColumn,
 }) => {
   const handleCreateCard = (columnId: string) => {
     const newData = data.map((item) => {
       if (item.id === columnId) {
-        const newColumn = createCard(item.data);
+        const newCard = createCard();
+        const newColumn = [...item.data, newCard];
         return {
           ...item,
           data: newColumn,
@@ -47,6 +51,14 @@ export const TaskBoard: FC<TaskBoardProps> = ({
     });
     if (onCreateCard) {
       onCreateCard(newData);
+    }
+  };
+
+  const handleCreateColumn = () => {
+    const newColumn = createColumn();
+    const newData = [...data, newColumn];
+    if (onCreateColumn) {
+      onCreateColumn(newData);
     }
   };
 
@@ -95,7 +107,7 @@ export const TaskBoard: FC<TaskBoardProps> = ({
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <div
-        className={`grow-0 rounded-md border-2 border-solid border-primary-800 bg-primary-100 p-2 pr-0 ${className}`}
+        className={`flex grow-0 flex-row rounded-md border-2 border-solid border-primary-800 bg-primary-100 p-2 pr-0 ${className}`}
       >
         <Droppable
           droppableId={getDroppableBoardId(id)}
@@ -123,6 +135,10 @@ export const TaskBoard: FC<TaskBoardProps> = ({
             </div>
           )}
         </Droppable>
+
+        <Button onClick={handleCreateColumn}>
+          <Icon type="Add" size="3rem" />
+        </Button>
       </div>
     </DragDropContext>
   );

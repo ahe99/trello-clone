@@ -2,15 +2,14 @@ import type { DragDropActionHandler } from "@utils/Handler";
 import { CardData, ColumnData } from "@utils/Data";
 import { getDroppableColumnId, getNewId } from "./position";
 
-export const createCard = (originalColumn: CardData[]): CardData[] => {
+export const createCard = (): CardData => {
   const newCard = {
     id: getNewId(),
     title: "untitled",
     description: "...",
   };
-  const newColumn = [...originalColumn, newCard];
-  return newColumn;
-};
+  return newCard;
+};;
 
 export const moveInSameColumn: DragDropActionHandler<CardData> = (
   originalColumn,
