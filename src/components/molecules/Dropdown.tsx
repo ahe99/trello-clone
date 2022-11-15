@@ -4,7 +4,7 @@ import { IconType } from "@icon-park/react/es/all";
 
 import { Icon } from "@components/atoms";
 
-type Option = {
+export type Option = {
   icon?: IconType;
   label?: string;
   key: string;
@@ -26,7 +26,7 @@ interface DropdownProps {
 export const Dropdown: FC<DropdownProps> = ({
   className,
   children,
-  size = "1.1rem",
+  size = "1rem",
   options,
   triggerMode = "hover",
   onSelectItem,
@@ -70,7 +70,7 @@ export const Dropdown: FC<DropdownProps> = ({
         }
       }}
     >
-      <div className="place-self-end rounded-md border-b-primary-400 bg-primary-200 p-2 hover:rounded-t-md hover:bg-primary-600 group-hover:rounded-b-none group-hover:border-b-2 group-hover:border-solid">
+      <div className="place-self-end rounded-md border-b-primary-400 bg-primary-100 px-2 py-1 hover:rounded-t-md hover:bg-primary-200 group-hover:rounded-b-none group-hover:border-b-2 group-hover:border-solid">
         {children}
       </div>
 
@@ -78,15 +78,17 @@ export const Dropdown: FC<DropdownProps> = ({
         <div className="flex flex-col">
           {options.map(({ icon, label, key }) => (
             <span
-              className="flex flex-row items-center justify-start rounded-md rounded-br-none rounded-tr-none border-b-2 border-dashed border-b-primary-400 bg-primary-200 p-2 text-primary-800 last:mb-0 last:rounded-br-md last:border-0 hover:bg-primary-600"
+              className="flex flex-row items-center justify-start rounded-md rounded-br-none rounded-tr-none border-b-2 border-dashed border-b-primary-400 bg-primary-100 p-1 text-primary-800 last:mb-0 last:rounded-br-md last:border-0 hover:bg-primary-200"
               key={key}
               onClick={(e) => {
                 e.stopPropagation();
                 handleSelectItem(key);
               }}
             >
-              {icon && <Icon className="pr-2" type={icon} size={size} />}
-              <div style={{ fontSize: size }}>{label}</div>
+              {icon && (
+                <Icon className={label ? "pr-1" : ""} type={icon} size={size} />
+              )}
+              {label && <div style={{ fontSize: size }}>{label}</div>}
             </span>
           ))}
         </div>
