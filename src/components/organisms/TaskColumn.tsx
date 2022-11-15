@@ -53,7 +53,7 @@ export const TaskColumn: FC<TaskColumnProps> = ({
                 ref={provided.innerRef}
               >
                 {data.map((item, i) => (
-                  <TaskCard.Draggble
+                  <TaskCard
                     key={item.id}
                     index={i}
                     data={item}

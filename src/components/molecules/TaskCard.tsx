@@ -11,7 +11,7 @@ export interface TaskCardProps {
   index: number;
 }
 
-const DraggableTaskCard: FC<TaskCardProps> = ({
+export const TaskCard: FC<TaskCardProps> = ({
   className,
   index,
   data: { id, title, description, types },
@@ -40,27 +40,4 @@ const DraggableTaskCard: FC<TaskCardProps> = ({
       )}
     </Draggable>
   );
-};
-
-const StaticTaskCard: FC<TaskCardProps> = ({
-  className,
-  data: { id, title, description, types },
-}) => {
-  return (
-    <div
-      className={`flex h-48 w-56 cursor-pointer flex-col rounded-md border-2 border-solid bg-primary-500 p-2 hover:bg-primary-400  ${className}`}
-    >
-      <div className="flex justify-start self-stretch border-b-2">
-        <div className="font-bold">{title}</div>
-      </div>
-      <div className="flex-1">
-        <div>{description}</div>
-      </div>
-    </div>
-  );
-};
-
-export const TaskCard = {
-  Static: StaticTaskCard,
-  Draggble: DraggableTaskCard,
 };
