@@ -44,6 +44,7 @@ export const parameters = {
       method: "",
       order: ["atoms", "molecules", "organisms", "templates", "pages"],
     },
+    panelPosition: "right",
   },
 };
 
