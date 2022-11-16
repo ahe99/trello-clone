@@ -9,7 +9,7 @@
     "lint": "next lint",
     "format": "prettier --write .",
     "dev:storybook": "start-storybook -p 6006 -s ./public",
-    "build-storybook": "build-storybook -s ./public"
+    "build:storybook": "build-storybook -s ./public"
   },
   "dependencies": {
     "@icon-park/react": "^1.4.2",
