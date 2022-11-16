@@ -12,25 +12,38 @@ import { TaskCard } from "@components/molecules";
 export interface TaskColumnProps extends ColumnData {
   className?: string;
   index: number;
-  onCreateCard: (id: string) => void;
+  onCreateCard?: (columnId: string) => void;
+  onEditCard?: (columnId: string, cardId: string) => void;
+  onDeleteCard?: (columnId: string, cardId: string) => void;
 }
 
 export const TaskColumn: FC<TaskColumnProps> = ({
   className,
   title,
-  id,
+  id: columnId,
   index,
   data,
   onCreateCard,
+  onEditCard,
+  onDeleteCard,
 }) => {
   const handleCreateCard = () => {
     if (onCreateCard) {
-      onCreateCard(id);
+      onCreateCard(columnId);
     }
   };
-
+  const handleEditCard = (cardId: string) => {
+    if (onEditCard) {
+      onEditCard(columnId, cardId);
+    }
+  };
+  const handleDeleteCard = (cardId: string) => {
+    if (onDeleteCard) {
+      onDeleteCard(columnId, cardId);
+    }
+  };
   return (
-    <Draggable draggableId={getDraggableColumnId(id)} index={index}>
+    <Draggable draggableId={getDraggableColumnId(columnId)} index={index}>
       {(provided, snapshot) => (
         <div
           {...provided.draggableProps}
@@ -42,7 +55,7 @@ export const TaskColumn: FC<TaskColumnProps> = ({
         >
           <div className={`mx-4 my-2 self-start text-primary-900`}>{title}</div>
           <Droppable
-            droppableId={getDroppableColumnId(id)}
+            droppableId={getDroppableColumnId(columnId)}
             type={DROP_TYPE.CARD}
             direction="vertical"
           >
@@ -58,6 +71,8 @@ export const TaskColumn: FC<TaskColumnProps> = ({
                     index={i}
                     data={item}
                     className="mb-2"
+                    onEdit={handleEditCard}
+                    onDelete={handleDeleteCard}
                   />
                 ))}
                 {provided.placeholder}

@@ -24,33 +24,61 @@ export interface TaskBoardProps extends BoardData {
   className?: string;
   onDragEnd?: (newData: ColumnData[]) => void;
   onCreateCard?: (newData: ColumnData[]) => void;
+  onEditCard?: (newData: ColumnData[]) => void;
+  onDeleteCard?: (newData: ColumnData[]) => void;
   onCreateColumn?: (newData: ColumnData[]) => void;
 }
 
 export const TaskBoard: FC<TaskBoardProps> = ({
   className,
-  id,
+  id: boardId,
   title,
   data,
   onDragEnd,
   onCreateCard,
+  onEditCard,
+  onDeleteCard,
   onCreateColumn,
 }) => {
   const handleCreateCard = (columnId: string) => {
-    const newData = data.map((item) => {
-      if (item.id === columnId) {
+    const newData = data.map((column) => {
+      if (column.id === columnId) {
         const newCard = createCard();
-        const newColumn = [...item.data, newCard];
+        const newColumn = [...column.data, newCard];
         return {
-          ...item,
+          ...column,
           data: newColumn,
         };
       } else {
-        return item;
+        return column;
       }
     });
     if (onCreateCard) {
       onCreateCard(newData);
+    }
+  };
+
+  const handleEditCard = (columnId: string, cardId: string) => {
+    console.log("handleEditCard", { columnId, cardId });
+    // if(onEditCard){
+    //   onEditCard(...)
+    // }
+  };
+
+  const handleDeleteCard = (columnId: string, cardId: string) => {
+    const newData = data.map((column) => {
+      if (column.id === columnId) {
+        const newColumn = column.data.filter((card) => card.id !== cardId);
+        return {
+          ...column,
+          data: newColumn,
+        };
+      } else {
+        return column;
+      }
+    });
+    if (onDeleteCard) {
+      onDeleteCard(newData);
     }
   };
 
@@ -110,7 +138,7 @@ export const TaskBoard: FC<TaskBoardProps> = ({
         className={`flex grow-0 flex-row rounded-md border-2 border-solid border-primary-800 bg-primary-100 p-2 pr-0 ${className}`}
       >
         <Droppable
-          droppableId={getDroppableBoardId(id)}
+          droppableId={getDroppableBoardId(boardId)}
           type={DROP_TYPE.COLUMN}
           direction="horizontal"
         >
@@ -129,6 +157,8 @@ export const TaskBoard: FC<TaskBoardProps> = ({
                   id={item.id}
                   data={item.data}
                   onCreateCard={handleCreateCard}
+                  onEditCard={handleEditCard}
+                  onDeleteCard={handleDeleteCard}
                 />
               ))}
               {provided.placeholder}

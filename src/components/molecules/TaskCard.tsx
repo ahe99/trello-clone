@@ -11,9 +11,13 @@ export interface TaskCardProps {
   className?: string;
   data: CardData;
   index: number;
+  onEdit?: (key: string) => void;
+  onDelete?: (key: string) => void;
 }
 
-const CARD_ACTIONS = [
+type CARD_ACTION = "Edit" | "Delete";
+
+const CARD_OPTIONS = [
   {
     icon: "Edit",
     label: "Edit",
@@ -30,7 +34,17 @@ export const TaskCard: FC<TaskCardProps> = ({
   className,
   index,
   data: { id, title, description, types },
+  onDelete,
+  onEdit,
 }) => {
+  const handleSelectItem = (key: CARD_ACTION) => {
+    if (key === "Edit" && onEdit) {
+      onEdit(id);
+    } else if (key === "Delete" && onDelete) {
+      onDelete(id);
+    }
+  };
+
   return (
     <Draggable draggableId={getDraggableCardId(id)} index={index}>
       {(provided, snapshot) => (
@@ -47,7 +61,7 @@ export const TaskCard: FC<TaskCardProps> = ({
           <div className="relative flex flex-row justify-between self-stretch">
             <div className="font-bold">{title}</div>
             <div className="invisible absolute right-0 top-2 group-hover/card:visible">
-              <Dropdown options={CARD_ACTIONS}>
+              <Dropdown options={CARD_OPTIONS} onSelectItem={handleSelectItem}>
                 <Icon type="More" />
               </Dropdown>
             </div>
