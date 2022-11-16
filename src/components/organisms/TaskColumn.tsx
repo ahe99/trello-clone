@@ -6,16 +6,32 @@ import { DROP_TYPE } from "@helpers/constants";
 import { getDraggableColumnId, getDroppableColumnId } from "@helpers/position";
 import type { ColumnData, CardData } from "@utils/Data";
 
-import { Button } from "@components/atoms";
-import { TaskCard } from "@components/molecules";
+import { Button, Icon } from "@components/atoms";
+import { TaskCard, Dropdown } from "@components/molecules";
+import type { Option } from "@components/molecules";
 
 export interface TaskColumnProps extends ColumnData {
   className?: string;
   index: number;
+  onEdit?: (columnId: string) => void;
+  onDelete?: (columnId: string) => void;
   onCreateCard?: (columnId: string) => void;
   onEditCard?: (columnId: string, cardId: string) => void;
   onDeleteCard?: (columnId: string, cardId: string) => void;
 }
+
+const CARD_OPTIONS = [
+  {
+    icon: "Edit",
+    label: "Edit",
+    key: "Edit",
+  },
+  {
+    icon: "Delete",
+    label: "Delete",
+    key: "Delete",
+  },
+] as Option[];
 
 export const TaskColumn: FC<TaskColumnProps> = ({
   className,
@@ -26,22 +42,35 @@ export const TaskColumn: FC<TaskColumnProps> = ({
   onCreateCard,
   onEditCard,
   onDeleteCard,
+  onEdit,
+  onDelete,
 }) => {
+  const handleClickAction = (key: string) => {
+    if (key === "Edit" && onEdit) {
+      onEdit(columnId);
+    } else if (key === "Delete" && onDelete) {
+      onDelete(columnId);
+    }
+  };
+
   const handleCreateCard = () => {
     if (onCreateCard) {
       onCreateCard(columnId);
     }
   };
+
   const handleEditCard = (cardId: string) => {
     if (onEditCard) {
       onEditCard(columnId, cardId);
     }
   };
+
   const handleDeleteCard = (cardId: string) => {
     if (onDeleteCard) {
       onDeleteCard(columnId, cardId);
     }
   };
+
   return (
     <Draggable draggableId={getDraggableColumnId(columnId)} index={index}>
       {(provided, snapshot) => (
@@ -53,7 +82,17 @@ export const TaskColumn: FC<TaskColumnProps> = ({
             snapshot.isDragging ? "shadow-lg" : "shadow-none"
           } ${className}`}
         >
-          <div className={`mx-4 my-2 self-start text-primary-900`}>{title}</div>
+          <div className="group/column relative flex flex-row justify-between self-stretch">
+            <div className={`mx-4 my-2 self-start text-primary-900`}>
+              {title}
+            </div>
+            <div className="invisible absolute right-0 top-2 z-40 group-hover/column:visible">
+              <Dropdown options={CARD_OPTIONS} onSelectItem={handleClickAction}>
+                <Icon type="More" />
+              </Dropdown>
+            </div>
+          </div>
+
           <Droppable
             droppableId={getDroppableColumnId(columnId)}
             type={DROP_TYPE.CARD}

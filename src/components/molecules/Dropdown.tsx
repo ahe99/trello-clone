@@ -53,7 +53,7 @@ export const Dropdown: FC<DropdownProps> = ({
 
   return (
     <div
-      className={`group flex cursor-pointer flex-col ${className}`}
+      className={`group flex cursor-pointer flex-col`}
       onClick={() => {
         if (triggerMode === "click") {
           handleOpenOptions();
@@ -70,7 +70,9 @@ export const Dropdown: FC<DropdownProps> = ({
         }
       }}
     >
-      <div className="place-self-end rounded-md border-b-primary-400 bg-primary-100 px-2 py-1 hover:rounded-t-md hover:bg-primary-200 group-hover:rounded-b-none group-hover:border-b-2 group-hover:border-solid">
+      <div
+        className={`place-self-end rounded-md border-b-primary-400 bg-primary-100 px-2 py-1 hover:rounded-t-md hover:bg-primary-200 group-hover:rounded-b-none group-hover:border-b-2 group-hover:border-solid ${className}`}
+      >
         {children}
       </div>
 

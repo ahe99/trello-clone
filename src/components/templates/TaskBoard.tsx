@@ -27,6 +27,8 @@ export interface TaskBoardProps extends BoardData {
   onEditCard?: (newData: ColumnData[]) => void;
   onDeleteCard?: (newData: ColumnData[]) => void;
   onCreateColumn?: (newData: ColumnData[]) => void;
+  onEditColumn?: (newData: ColumnData[]) => void;
+  onDeleteColumn?: (newData: ColumnData[]) => void;
 }
 
 export const TaskBoard: FC<TaskBoardProps> = ({
@@ -39,7 +41,31 @@ export const TaskBoard: FC<TaskBoardProps> = ({
   onEditCard,
   onDeleteCard,
   onCreateColumn,
+  onEditColumn,
+  onDeleteColumn,
 }) => {
+  const handleCreateColumn = () => {
+    const newColumn = createColumn();
+    const newData = [...data, newColumn];
+    if (onCreateColumn) {
+      onCreateColumn(newData);
+    }
+  };
+
+  const handleEditColumn = (columnId: string) => {
+    console.log("handleEditColumn", { columnId });
+    // if(onEditColumn){
+    //   onEditColumn(...)
+    // }
+  };
+
+  const handleDeleteColumn = (columnId: string) => {
+    const newData = data.filter((column) => column.id !== columnId);
+    if (onDeleteColumn) {
+      onDeleteColumn(newData);
+    }
+  };
+
   const handleCreateCard = (columnId: string) => {
     const newData = data.map((column) => {
       if (column.id === columnId) {
@@ -82,54 +108,64 @@ export const TaskBoard: FC<TaskBoardProps> = ({
     }
   };
 
-  const handleCreateColumn = () => {
-    const newColumn = createColumn();
-    const newData = [...data, newColumn];
-    if (onCreateColumn) {
-      onCreateColumn(newData);
-    }
-  };
-
   const handleDragEnd = (result: DropResult) => {
     const { source, destination, type } = result;
-    let newData = [...data];
 
     const hasDestination = !!destination;
     if (!hasDestination || isSameDraggable(source, destination)) {
       return;
     }
 
+    let newData = [...data];
     if (type === DROP_TYPE.CARD) {
-      if (inSameDroppable(source, destination)) {
-        const targetColumn = data.find(
-          (item) => source.droppableId === getDroppableColumnId(item.id)
-        )!;
-
-        const newColumn = {
-          id: targetColumn.id,
-          title: targetColumn.title,
-          data: moveInSameColumn(targetColumn.data, source, destination),
-        };
-
-        newData = newData.map((column) => {
-          if (column.id === newColumn.id) {
-            return newColumn;
-          } else {
-            return column;
-          }
-        });
-      } else {
-        newData = moveBetweenColumns(data, source, destination);
-      }
+      newData = handleDragDropCard(result);
     } else if (type === DROP_TYPE.COLUMN) {
-      if (inSameDroppable(source, destination)) {
-        newData = moveInSameBoard(data, source, destination);
-      }
+      newData = handleDragDropColumn(result);
     }
 
     if (onDragEnd) {
       onDragEnd(newData);
     }
+  };
+
+  const handleDragDropColumn = (result: DropResult): ColumnData[] => {
+    const { source, destination } = result;
+
+    let newData = [...data];
+    if (inSameDroppable(source, destination)) {
+      newData = moveInSameBoard(data, source, destination);
+    }
+
+    return newData;
+  };
+
+  const handleDragDropCard = (result: DropResult): ColumnData[] => {
+    const { source, destination } = result;
+
+    let newData = [...data];
+    if (inSameDroppable(source, destination)) {
+      const targetColumn = data.find(
+        (item) => source.droppableId === getDroppableColumnId(item.id)
+      )!;
+
+      const newColumn = {
+        id: targetColumn.id,
+        title: targetColumn.title,
+        data: moveInSameColumn(targetColumn.data, source, destination),
+      };
+
+      newData = data.map((column) => {
+        if (column.id === newColumn.id) {
+          return newColumn;
+        } else {
+          return column;
+        }
+      });
+    } else {
+      newData = moveBetweenColumns(data, source, destination);
+    }
+
+    return newData;
   };
 
   return (
@@ -156,6 +192,8 @@ export const TaskBoard: FC<TaskBoardProps> = ({
                   title={item.title}
                   id={item.id}
                   data={item.data}
+                  onEdit={handleEditColumn}
+                  onDelete={handleDeleteColumn}
                   onCreateCard={handleCreateCard}
                   onEditCard={handleEditCard}
                   onDeleteCard={handleDeleteCard}

@@ -56,23 +56,32 @@ const Template: ComponentStory<typeof TaskBoard> = (args) => {
   const handleDragEnd = (newBoard: ColumnData[]) => {
     setData(newBoard);
   };
+  const handleCreateColumn = (newBoard: ColumnData[]) => {
+    setData(newBoard);
+  };
+  const handleEditColumn = (newBoard: ColumnData[]) => {
+    setData(newBoard);
+  };
+  const handleDeleteColumn = (newBoard: ColumnData[]) => {
+    setData(newBoard);
+  };
   const handleCreateCard = (newBoard: ColumnData[]) => {
     setData(newBoard);
   };
   const handleDeleteCard = (newBoard: ColumnData[]) => {
     setData(newBoard);
   };
-  const handleCreateColumn = (newBoard: ColumnData[]) => {
-    setData(newBoard);
-  };
+
   return (
     <TaskBoard
       {...args}
       data={data}
       onDragEnd={handleDragEnd}
+      onCreateColumn={handleCreateColumn}
+      onEditColumn={handleEditColumn}
+      onDeleteColumn={handleDeleteColumn}
       onCreateCard={handleCreateCard}
       onDeleteCard={handleDeleteCard}
-      onCreateColumn={handleCreateColumn}
     />
   );
 };

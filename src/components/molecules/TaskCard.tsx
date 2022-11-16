@@ -11,11 +11,9 @@ export interface TaskCardProps {
   className?: string;
   data: CardData;
   index: number;
-  onEdit?: (key: string) => void;
-  onDelete?: (key: string) => void;
+  onEdit?: (cardId: string) => void;
+  onDelete?: (cardId: string) => void;
 }
-
-type CARD_ACTION = "Edit" | "Delete";
 
 const CARD_OPTIONS = [
   {
@@ -33,20 +31,20 @@ const CARD_OPTIONS = [
 export const TaskCard: FC<TaskCardProps> = ({
   className,
   index,
-  data: { id, title, description, types },
+  data: { id: cardId, title, description, types },
   onDelete,
   onEdit,
 }) => {
-  const handleSelectItem = (key: CARD_ACTION) => {
+  const handleClickAction = (key: string) => {
     if (key === "Edit" && onEdit) {
-      onEdit(id);
+      onEdit(cardId);
     } else if (key === "Delete" && onDelete) {
-      onDelete(id);
+      onDelete(cardId);
     }
   };
 
   return (
-    <Draggable draggableId={getDraggableCardId(id)} index={index}>
+    <Draggable draggableId={getDraggableCardId(cardId)} index={index}>
       {(provided, snapshot) => (
         <div
           {...provided.draggableProps}
@@ -60,8 +58,8 @@ export const TaskCard: FC<TaskCardProps> = ({
         >
           <div className="relative flex flex-row justify-between self-stretch">
             <div className="font-bold">{title}</div>
-            <div className="invisible absolute right-0 top-2 group-hover/card:visible">
-              <Dropdown options={CARD_OPTIONS} onSelectItem={handleSelectItem}>
+            <div className="invisible absolute right-0 top-0 z-30 opacity-80 group-hover/card:visible">
+              <Dropdown options={CARD_OPTIONS} onSelectItem={handleClickAction}>
                 <Icon type="More" />
               </Dropdown>
             </div>
