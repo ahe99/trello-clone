@@ -1,12 +1,13 @@
 import "../styles/globals.css";
-import { DragDropContext } from "react-beautiful-dnd";
+
+import { ModalProvider } from "@context/modal";
 
 export const decorators = [
   (Story) => {
     return (
-      <div className="flex">
+      <ModalProvider>
         <Story />
-      </div>
+      </ModalProvider>
     );
   },
 ];

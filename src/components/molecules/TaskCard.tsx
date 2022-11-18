@@ -58,7 +58,7 @@ export const TaskCard: FC<TaskCardProps> = ({
         >
           <div className="relative flex flex-row justify-between self-stretch">
             <div className="font-bold">{title}</div>
-            <div className="invisible absolute right-0 top-0 z-30 opacity-80 group-hover/card:visible">
+            <div className="invisible absolute right-0 top-0 z-20 opacity-80 group-hover/card:visible">
               <Dropdown options={CARD_OPTIONS} onSelectItem={handleClickAction}>
                 <Icon type="More" />
               </Dropdown>

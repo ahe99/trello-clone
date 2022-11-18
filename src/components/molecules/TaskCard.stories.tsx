@@ -23,6 +23,7 @@ const Template: ComponentStory<typeof TaskCard> = (args) => (
           className="flex flex-row"
         >
           <TaskCard {...args} />
+          {provided.placeholder}
         </div>
       )}
     </Droppable>
@@ -32,6 +33,7 @@ const Template: ComponentStory<typeof TaskCard> = (args) => (
 export const Default = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Default.args = {
+  index: 0,
   data: {
     id: "0",
     title: "test card 1",

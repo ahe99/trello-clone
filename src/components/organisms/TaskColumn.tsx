@@ -86,7 +86,7 @@ export const TaskColumn: FC<TaskColumnProps> = ({
             <div className={`mx-4 my-2 self-start text-primary-900`}>
               {title}
             </div>
-            <div className="invisible absolute right-0 top-2 z-40 group-hover/column:visible">
+            <div className="invisible absolute right-0 top-2 z-30 group-hover/column:visible">
               <Dropdown options={CARD_OPTIONS} onSelectItem={handleClickAction}>
                 <Icon type="More" />
               </Dropdown>
