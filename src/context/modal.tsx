@@ -1,6 +1,7 @@
-import React, { useState, Context, createContext } from "react";
+import React, { useState, useEffect, createContext } from "react";
 import type { FC, ReactNode } from "react";
-import { useEffect } from "react";
+
+import { Modal } from "@components/templates";
 
 export type ModalContextValues = {
   isHidden: boolean;
@@ -30,11 +31,11 @@ export const ModalProvider: FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   const hide = () => {
-    setIsHidden(false);
+    setIsHidden(true);
   };
 
   const show = () => {
-    setIsHidden(true);
+    setIsHidden(false);
   };
 
   const toggle = () => {
@@ -54,15 +55,7 @@ export const ModalProvider: FC<{ children: ReactNode }> = ({ children }) => {
       }}
     >
       {children}
-      {!isHidden && <Modal content={content} />}
+      {!isHidden && <Modal />}
     </ModalContext.Provider>
-  );
-};
-
-const Modal = ({ content }: { content: ReactNode }) => {
-  return (
-    <div className="fixed top-0 left-0 z-50 flex h-full w-full items-center justify-center bg-indigo-200 bg-opacity-40">
-      <div className="h-60 w-60 rounded-md bg-primary-200">{content}</div>
-    </div>
   );
 };
