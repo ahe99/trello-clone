@@ -4,8 +4,8 @@ import type { FC, ChangeEvent } from "react";
 interface InputProps {
   value: string;
   placeholder?: string;
-  className: string;
-  innerClassName: string;
+  className?: string;
+  innerClassName?: string;
   onClick?: () => void;
   onChange?: (value: string) => void;
   onBlur?: (value: string) => void;
@@ -23,7 +23,7 @@ export const Input: FC<InputProps> = ({
   onBlur,
 }) => {
   const shouldShowPlaceholder = !!placeholder && !value;
-  console.log(!!placeholder, !value);
+
   const [inputMode, setInputMode] = useState<InputStep>(
     shouldShowPlaceholder ? "PLACEHOLDER" : "VIEW"
   );
@@ -57,6 +57,7 @@ export const Input: FC<InputProps> = ({
           value={value}
           onChange={handleChange}
           onBlur={handleBlur}
+          onKeyDown={handleBlur}
           placeholder={placeholder}
           autoFocus
         />
