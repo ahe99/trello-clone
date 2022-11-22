@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import type { FC, ChangeEvent } from "react";
+import type { FC, ChangeEvent, KeyboardEvent } from "react";
 
 interface InputProps {
   value: string;
@@ -48,6 +48,12 @@ export const Input: FC<InputProps> = ({
     }
   };
 
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleBlur();
+    }
+  };
+
   const InputBody = () => {
     if (inputMode === "INPUT") {
       return (
@@ -57,7 +63,7 @@ export const Input: FC<InputProps> = ({
           value={value}
           onChange={handleChange}
           onBlur={handleBlur}
-          onKeyDown={handleBlur}
+          onKeyDown={handleKeyDown}
           placeholder={placeholder}
           autoFocus
         />
