@@ -211,7 +211,7 @@ export const TaskBoard: FC<TaskBoardProps> = ({
       {boardVisible && (
         <DragDropContext onDragEnd={handleDragEnd}>
           <div
-            className={`flex grow-0 flex-row rounded-md border-2 border-solid border-primary-800 bg-primary-100 p-2 pr-0 ${className}`}
+            className={`flex flex-row rounded-md border-2 border-solid border-primary-800 bg-primary-100 p-2 pr-0 ${className}`}
           >
             <Droppable
               droppableId={getDroppableBoardId(boardId)}
@@ -245,10 +245,10 @@ export const TaskBoard: FC<TaskBoardProps> = ({
             </Droppable>
 
             <Button
-              className="mb-2 mr-2 flex h-full w-6 items-center justify-center rounded-md bg-primary-500 text-center text-xl text-primary-900 opacity-40 hover:border-2 hover:border-solid hover:opacity-100"
+              className="mb-2 mr-2 flex w-6 items-center justify-center rounded-md bg-primary-500 text-primary-900 opacity-40 hover:border-2 hover:border-solid hover:opacity-100"
               onClick={handleCreateColumn}
             >
-              +
+              <Icon type="Plus" />
             </Button>
           </div>
         </DragDropContext>

@@ -124,11 +124,12 @@ export const TaskColumn: FC<TaskColumnProps> = ({
                   />
                 ))}
                 {provided.placeholder}
+
                 <Button
-                  onClick={handleCreateCard}
                   className="mb-2 flex h-6 w-56 items-center justify-center rounded-md bg-primary-500 text-center text-xl text-primary-900 opacity-40 hover:border-2 hover:border-solid hover:opacity-100"
+                  onClick={handleCreateCard}
                 >
-                  +
+                  <Icon type="Plus" />
                 </Button>
               </div>
             )}

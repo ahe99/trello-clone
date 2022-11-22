@@ -2,6 +2,7 @@ import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { Button } from "./Button";
+import { Icon } from "./Icon";
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 
 export default {
@@ -18,8 +19,8 @@ export const CreateCard = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 CreateCard.args = {
   className:
-    "mb-2 flex h-6 w-56 items-center justify-center rounded-md border-2 border-solid bg-primary-500 text-center text-xl text-primary-900 hover:bg-primary-400",
-  children: "+",
+    "mb-2 mr-2 flex w-56 h-6 items-center justify-center rounded-md bg-primary-500 text-primary-900 opacity-40 hover:border-2 hover:border-solid hover:opacity-100",
+  children: <Icon type="Plus" />,
   onClick: () => {
     console.log("create card");
   },
