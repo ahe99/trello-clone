@@ -66,9 +66,7 @@ export const TaskCard: FC<TaskCardProps> = ({
           {...provided.dragHandleProps}
           ref={provided.innerRef}
           className={`group/card flex h-48 w-56 cursor-pointer flex-col rounded-md border-2 border-solid border-primary-800 bg-primary-500 p-2 hover:bg-primary-400 hover:shadow-xl ${
-            snapshot.isDragging
-              ? "bg-primary-400 shadow-xl"
-              : "bg-primary-500 shadow-none"
+            snapshot.isDragging ? "shadow-xl" : "shadow-none"
           } ${className}`}
         >
           <div className="relative flex flex-row justify-between self-stretch">

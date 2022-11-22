@@ -20,7 +20,7 @@ import { useModal } from "@hooks";
 import { ModalProvider } from "@context/modal";
 
 import { TaskColumn } from "@components/organisms";
-import { Button, Icon } from "@components/atoms";
+import { Button, Icon, Tag } from "@components/atoms";
 export interface TaskBoardProps extends BoardData {
   className?: string;
   onDragEnd?: (newData: ColumnData[]) => void;
@@ -46,6 +46,8 @@ export const TaskBoard: FC<TaskBoardProps> = ({
   onDeleteColumn,
 }) => {
   const modal = useModal();
+
+  const [boardVisible, setBoardVisible] = useState(true);
 
   const handleCreateColumn = () => {
     const newColumn = createColumn();
@@ -188,51 +190,69 @@ export const TaskBoard: FC<TaskBoardProps> = ({
     return newData;
   };
 
-  return (
-    <div className="flex">
-      <DragDropContext onDragEnd={handleDragEnd}>
-        <div
-          className={`flex grow-0 flex-row rounded-md border-2 border-solid border-primary-800 bg-primary-100 p-2 pr-0 ${className}`}
-        >
-          <Droppable
-            droppableId={getDroppableBoardId(boardId)}
-            type={DROP_TYPE.COLUMN}
-            direction="horizontal"
-          >
-            {(provided, snapshot) => (
-              <div
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-                className="flex flex-row"
-              >
-                {data.map((item, index) => (
-                  <TaskColumn
-                    key={item.id}
-                    index={index}
-                    className="mr-2"
-                    title={item.title}
-                    id={item.id}
-                    data={item.data}
-                    onEdit={handleEditColumn}
-                    onDelete={handleDeleteColumn}
-                    onCreateCard={handleCreateCard}
-                    onEditCard={handleEditCard}
-                    onDeleteCard={handleDeleteCard}
-                  />
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
+  const handleToggleBoard = () => {
+    setBoardVisible((prev) => !prev);
+  };
 
-          <Button
-            className="mb-2 mr-2 flex h-full w-6 items-center justify-center rounded-md bg-primary-500 text-center text-xl text-primary-900 opacity-40 hover:border-2 hover:border-solid hover:opacity-100"
-            onClick={handleCreateColumn}
+  return (
+    <div className="inline-flex flex-col">
+      <div
+        className="mb-2 flex-grow-0 cursor-pointer items-center"
+        onClick={handleToggleBoard}
+      >
+        <Tag label={title} />
+        <Icon
+          type="Right"
+          className={`transition-transform ${boardVisible ? "rotate-90" : ""}`}
+          size="1.2rem"
+        />
+      </div>
+
+      {boardVisible && (
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <div
+            className={`flex grow-0 flex-row rounded-md border-2 border-solid border-primary-800 bg-primary-100 p-2 pr-0 ${className}`}
           >
-            +
-          </Button>
-        </div>
-      </DragDropContext>
+            <Droppable
+              droppableId={getDroppableBoardId(boardId)}
+              type={DROP_TYPE.COLUMN}
+              direction="horizontal"
+            >
+              {(provided, snapshot) => (
+                <div
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  className="flex flex-row"
+                >
+                  {data.map((item, index) => (
+                    <TaskColumn
+                      key={item.id}
+                      index={index}
+                      className="mr-2"
+                      title={item.title}
+                      id={item.id}
+                      data={item.data}
+                      onEdit={handleEditColumn}
+                      onDelete={handleDeleteColumn}
+                      onCreateCard={handleCreateCard}
+                      onEditCard={handleEditCard}
+                      onDeleteCard={handleDeleteCard}
+                    />
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+
+            <Button
+              className="mb-2 mr-2 flex h-full w-6 items-center justify-center rounded-md bg-primary-500 text-center text-xl text-primary-900 opacity-40 hover:border-2 hover:border-solid hover:opacity-100"
+              onClick={handleCreateColumn}
+            >
+              +
+            </Button>
+          </div>
+        </DragDropContext>
+      )}
     </div>
   );
 };
