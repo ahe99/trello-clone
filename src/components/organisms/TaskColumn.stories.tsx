@@ -37,6 +37,7 @@ const mockData = [
 ];
 
 const Template: ComponentStory<typeof TaskColumn> = (args) => {
+  const [title, setTitle] = useState("test column 1");
   const [column, setColumn] = useState<CardData[]>(mockData);
 
   const handleCreateCard = () => {
@@ -51,7 +52,7 @@ const Template: ComponentStory<typeof TaskColumn> = (args) => {
   };
 
   const handleEditColumn = (column: ColumnData) => {
-    setColumn(column.data);
+    setTitle(column.title);
   };
 
   const handleDragEnd = (result: DropResult) => {
@@ -87,6 +88,7 @@ const Template: ComponentStory<typeof TaskColumn> = (args) => {
           >
             <TaskColumn
               {...args}
+              title={title}
               data={column}
               index={0}
               onEdit={handleEditColumn}
@@ -104,5 +106,4 @@ export const Default = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Default.args = {
   id: "0",
-  title: "test column 1",
 };

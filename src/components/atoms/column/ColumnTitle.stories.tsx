@@ -19,7 +19,7 @@ const Template: ComponentStory<typeof ColumnTitle> = (args) => (
 export const Default = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Default.args = {
-  value: "card title",
+  value: "column title",
   className: "",
   innerClassName: "",
 };
