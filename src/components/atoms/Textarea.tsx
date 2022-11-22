@@ -28,7 +28,7 @@ export const Textarea: FC<TextareaProps> = ({
     shouldShowPlaceholder ? "PLACEHOLDER" : "VIEW"
   );
 
-  const cursorPosition = useRef(0);
+  const cursorPosition = useRef(value.length);
 
   const handleClick = () => {
     setInputMode("INPUT");

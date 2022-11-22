@@ -73,8 +73,7 @@ export const TaskCard: FC<TaskCardProps> = ({
         >
           <div className="relative flex flex-row justify-between self-stretch">
             <CardTitle
-              innerClassName="font-bold bg-primary-500 hover:bg-primary-400"
-              className=""
+              innerClassName="font-bold bg-primary-500 hover:hover:bg-primary-300"
               value={title}
               onChange={handleEditName}
             />
@@ -86,8 +85,8 @@ export const TaskCard: FC<TaskCardProps> = ({
           </div>
           <span className="m-1 border-b-2" />
           <CardDescription
-            innerClassName="flex-1 font-bold bg-primary-500 hover:bg-primary-400"
-            // className="flex-1 bg-primary-500 font-bold hover:bg-primary-400"
+            className="h-full bg-primary-500 font-bold hover:bg-primary-300"
+            innerClassName="h-full bg-primary-500 font-bold hover:bg-primary-300"
             value={description || ""}
             onChange={handleEditDescription}
           />
