@@ -39,9 +39,15 @@ const mockData = [
 const Template: ComponentStory<typeof TaskColumn> = (args) => {
   const [column, setColumn] = useState<CardData[]>(mockData);
 
-  const handleCreateCard = (id: string) => {
-    const newColumn = createCard(column);
-    setColumn(newColumn);
+  const handleCreateCard = () => {
+    const newCard = createCard();
+    setColumn((prev) => [...prev, newCard]);
+  };
+
+  const handleEditCard = (_: string, card: CardData) => {
+    setColumn((prev) =>
+      prev.map((item) => (item.id === card.id ? card : item))
+    );
   };
 
   const handleDragEnd = (result: DropResult) => {
@@ -80,6 +86,7 @@ const Template: ComponentStory<typeof TaskColumn> = (args) => {
               data={column}
               index={0}
               onCreateCard={handleCreateCard}
+              onEditCard={handleEditCard}
             />
             {provided.placeholder}
           </div>

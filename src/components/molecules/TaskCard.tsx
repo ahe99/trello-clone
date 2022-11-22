@@ -4,14 +4,15 @@ import { Draggable } from "react-beautiful-dnd";
 
 import { getDraggableCardId } from "@helpers/position";
 import type { CardData } from "@utils/Data";
-import { Icon } from "@components/atoms";
+import { Icon, CardTitle, CardDescription } from "@components/atoms";
 import { Dropdown } from "./Dropdown";
 import type { Option } from "./Dropdown";
+
 export interface TaskCardProps {
   className?: string;
   data: CardData;
   index: number;
-  onEdit?: (cardId: string) => void;
+  onEdit?: (card: CardData) => void;
   onDelete?: (cardId: string) => void;
 }
 
@@ -31,15 +32,29 @@ const CARD_OPTIONS = [
 export const TaskCard: FC<TaskCardProps> = ({
   className,
   index,
-  data: { id: cardId, title, description, types },
+  data,
   onDelete,
   onEdit,
 }) => {
+  const { id: cardId, title, description, types } = data;
+
   const handleClickAction = (key: string) => {
     if (key === "Edit" && onEdit) {
-      onEdit(cardId);
+      onEdit(data);
     } else if (key === "Delete" && onDelete) {
       onDelete(cardId);
+    }
+  };
+
+  const handleEditName = (name: string) => {
+    if (onEdit) {
+      onEdit({ ...data, title: name });
+    }
+  };
+
+  const handleEditDescription = (description: string) => {
+    if (onEdit) {
+      onEdit({ ...data, description: description });
     }
   };
 
@@ -57,7 +72,12 @@ export const TaskCard: FC<TaskCardProps> = ({
           } ${className}`}
         >
           <div className="relative flex flex-row justify-between self-stretch">
-            <div className="font-bold">{title}</div>
+            <CardTitle
+              innerClassName="font-bold bg-primary-500 hover:bg-primary-400"
+              className=""
+              value={title}
+              onChange={handleEditName}
+            />
             <div className="invisible absolute right-0 top-0 z-20 opacity-80 group-hover/card:visible">
               <Dropdown options={CARD_OPTIONS} onSelectItem={handleClickAction}>
                 <Icon type="More" />
@@ -65,9 +85,12 @@ export const TaskCard: FC<TaskCardProps> = ({
             </div>
           </div>
           <span className="m-1 border-b-2" />
-          <div className="flex-1">
-            <div>{description}</div>
-          </div>
+          <CardDescription
+            innerClassName="flex-1 font-bold bg-primary-500 hover:bg-primary-400"
+            // className="flex-1 bg-primary-500 font-bold hover:bg-primary-400"
+            value={description || ""}
+            onChange={handleEditDescription}
+          />
         </div>
       )}
     </Draggable>

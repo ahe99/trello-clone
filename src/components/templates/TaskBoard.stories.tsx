@@ -68,6 +68,9 @@ const Template: ComponentStory<typeof TaskBoard> = (args) => {
   const handleCreateCard = (newBoard: ColumnData[]) => {
     setData(newBoard);
   };
+  const handleEditCard = (newBoard: ColumnData[]) => {
+    setData(newBoard);
+  };
   const handleDeleteCard = (newBoard: ColumnData[]) => {
     setData(newBoard);
   };
@@ -81,6 +84,7 @@ const Template: ComponentStory<typeof TaskBoard> = (args) => {
       onEditColumn={handleEditColumn}
       onDeleteColumn={handleDeleteColumn}
       onCreateCard={handleCreateCard}
+      onEditCard={handleEditCard}
       onDeleteCard={handleDeleteCard}
     />
   );

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import type { FC, ChangeEvent, KeyboardEvent } from "react";
+import React, { useRef, useState } from "react";
+import type { FC, ChangeEvent, KeyboardEvent, FocusEvent } from "react";
 
-interface InputProps {
+interface TextareaProps {
   value: string;
   placeholder?: string;
   className?: string;
@@ -11,23 +11,24 @@ interface InputProps {
   onBlur?: (value: string) => void;
 }
 
-type InputStep = "PLACEHOLDER" | "VIEW" | "INPUT";
+type TextareaStep = "PLACEHOLDER" | "VIEW" | "INPUT";
 
-export const Input: FC<InputProps> = ({
+export const Textarea: FC<TextareaProps> = ({
   placeholder = "Plz input...",
   value,
   className,
   innerClassName,
-  multiple = false,
   onClick,
   onChange,
   onBlur,
 }) => {
   const shouldShowPlaceholder = !!placeholder && !value;
 
-  const [inputMode, setInputMode] = useState<InputStep>(
+  const [inputMode, setInputMode] = useState<TextareaStep>(
     shouldShowPlaceholder ? "PLACEHOLDER" : "VIEW"
   );
+
+  const cursorPosition = useRef(0);
 
   const handleClick = () => {
     setInputMode("INPUT");
@@ -36,35 +37,31 @@ export const Input: FC<InputProps> = ({
     }
   };
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    cursorPosition.current = e.target.selectionStart;
     if (onChange) {
       onChange(e.target.value);
     }
   };
 
-  const handleBlur = () => {
+  const handleBlur = (e: FocusEvent<HTMLTextAreaElement>) => {
     setInputMode(shouldShowPlaceholder ? "PLACEHOLDER" : "VIEW");
     if (onBlur) {
       onBlur(value);
     }
   };
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      handleBlur();
-    }
-  };
-
   const InputBody = () => {
     if (inputMode === "INPUT") {
       return (
-        <input
+        <textarea
           className={`h-full w-full bg-primary-200 p-2 text-primary-800 outline-none placeholder:text-primary-400 ${innerClassName}`}
-          type="text"
           value={value}
           onChange={handleChange}
+          onFocus={(e) => {
+            e.target.selectionStart = cursorPosition.current;
+          }}
           onBlur={handleBlur}
-          onKeyDown={handleKeyDown}
           placeholder={placeholder}
           autoFocus
         />
@@ -72,7 +69,7 @@ export const Input: FC<InputProps> = ({
     } else if (inputMode === "VIEW") {
       return (
         <div
-          className={`w-full truncate p-2 text-primary-800 ${innerClassName}`}
+          className={`w-full whitespace-pre-wrap p-2 text-primary-800 ${innerClassName}`}
           onClick={handleClick}
         >
           {value}
@@ -92,7 +89,7 @@ export const Input: FC<InputProps> = ({
 
   return (
     <div
-      className={`flex h-8 w-full cursor-pointer items-center overflow-hidden rounded-md bg-primary-200 text-primary-800 hover:bg-primary-400 ${className}`}
+      className={`flex w-full cursor-pointer items-center overflow-hidden rounded-md bg-primary-200 text-primary-800 hover:bg-primary-400 ${className}`}
     >
       <InputBody />
     </div>

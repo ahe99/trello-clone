@@ -15,7 +15,7 @@ import {
   getDroppableColumnId,
 } from "@helpers/position";
 import { DROP_TYPE } from "@helpers/constants";
-import { BoardData, ColumnData } from "@utils/Data";
+import { BoardData, CardData, ColumnData } from "@utils/Data";
 import { useModal } from "@hooks";
 import { ModalProvider } from "@context/modal";
 
@@ -87,13 +87,26 @@ export const TaskBoard: FC<TaskBoardProps> = ({
     }
   };
 
-  const handleEditCard = (columnId: string, cardId: string) => {
-    console.log("handleEditCard", { columnId, cardId });
-    modal.putContent("123");
-    modal.toggle();
-    // if(onEditCard){
-    //   onEditCard(...)
-    // }
+  const handleEditCard = (columnId: string, editedCard: CardData) => {
+    // modal.putContent("123");
+    // modal.toggle();
+
+    const newData = data.map((column) => {
+      if (column.id === columnId) {
+        const newColumn = column.data.map((_card) =>
+          _card.id === editedCard.id ? editedCard : _card
+        );
+        return {
+          ...column,
+          data: newColumn,
+        };
+      } else {
+        return column;
+      }
+    });
+    if (onEditCard) {
+      onEditCard(newData);
+    }
   };
 
   const handleDeleteCard = (columnId: string, cardId: string) => {

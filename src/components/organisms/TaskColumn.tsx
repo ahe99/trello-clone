@@ -16,7 +16,7 @@ export interface TaskColumnProps extends ColumnData {
   onEdit?: (columnId: string) => void;
   onDelete?: (columnId: string) => void;
   onCreateCard?: (columnId: string) => void;
-  onEditCard?: (columnId: string, cardId: string) => void;
+  onEditCard?: (columnId: string, card: CardData) => void;
   onDeleteCard?: (columnId: string, cardId: string) => void;
 }
 
@@ -59,9 +59,9 @@ export const TaskColumn: FC<TaskColumnProps> = ({
     }
   };
 
-  const handleEditCard = (cardId: string) => {
+  const handleEditCard = (card: CardData) => {
     if (onEditCard) {
-      onEditCard(columnId, cardId);
+      onEditCard(columnId, card);
     }
   };
 
