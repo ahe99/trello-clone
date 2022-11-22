@@ -6,14 +6,14 @@ import { DROP_TYPE } from "@helpers/constants";
 import { getDraggableColumnId, getDroppableColumnId } from "@helpers/position";
 import type { ColumnData, CardData } from "@utils/Data";
 
-import { Button, Icon } from "@components/atoms";
+import { Button, ColumnTitle, Icon } from "@components/atoms";
 import { TaskCard, Dropdown } from "@components/molecules";
 import type { Option } from "@components/molecules";
 
 export interface TaskColumnProps extends ColumnData {
   className?: string;
   index: number;
-  onEdit?: (columnId: string) => void;
+  onEdit?: (column: ColumnData) => void;
   onDelete?: (columnId: string) => void;
   onCreateCard?: (columnId: string) => void;
   onEditCard?: (columnId: string, card: CardData) => void;
@@ -47,7 +47,7 @@ export const TaskColumn: FC<TaskColumnProps> = ({
 }) => {
   const handleClickAction = (key: string) => {
     if (key === "Edit" && onEdit) {
-      onEdit(columnId);
+      onEdit({ id: columnId, title, data });
     } else if (key === "Delete" && onDelete) {
       onDelete(columnId);
     }
@@ -71,6 +71,12 @@ export const TaskColumn: FC<TaskColumnProps> = ({
     }
   };
 
+  const handleEdit = (value: string) => {
+    if (onEdit) {
+      onEdit({ id: columnId, title: value, data });
+    }
+  };
+
   return (
     <Draggable draggableId={getDraggableColumnId(columnId)} index={index}>
       {(provided, snapshot) => (
@@ -83,9 +89,12 @@ export const TaskColumn: FC<TaskColumnProps> = ({
           } ${className}`}
         >
           <div className="group/column relative flex flex-row justify-between self-stretch">
-            <div className={`mx-4 my-2 self-start text-primary-900`}>
-              {title}
-            </div>
+            <ColumnTitle
+              value={title}
+              innerClassName="text-primary-900"
+              className="my-1"
+              onChange={handleEdit}
+            />
             <div className="invisible absolute right-0 top-2 z-30 group-hover/column:visible">
               <Dropdown options={CARD_OPTIONS} onSelectItem={handleClickAction}>
                 <Icon type="More" />

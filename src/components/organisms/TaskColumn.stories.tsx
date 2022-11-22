@@ -4,7 +4,7 @@ import { Droppable, DropResult, DragDropContext } from "react-beautiful-dnd";
 
 import { DROP_TYPE } from "@helpers/constants";
 import { createCard, moveInSameColumn } from "@helpers/cards";
-import type { CardData } from "@utils/Data";
+import type { CardData, ColumnData } from "@utils/Data";
 
 import { TaskColumn } from "./TaskColumn";
 import { inSameDroppable, isSameDraggable } from "@helpers/position";
@@ -50,6 +50,10 @@ const Template: ComponentStory<typeof TaskColumn> = (args) => {
     );
   };
 
+  const handleEditColumn = (column: ColumnData) => {
+    setColumn(column.data);
+  };
+
   const handleDragEnd = (result: DropResult) => {
     const { source, destination } = result;
 
@@ -85,6 +89,7 @@ const Template: ComponentStory<typeof TaskColumn> = (args) => {
               {...args}
               data={column}
               index={0}
+              onEdit={handleEditColumn}
               onCreateCard={handleCreateCard}
               onEditCard={handleEditCard}
             />

@@ -55,11 +55,13 @@ export const TaskBoard: FC<TaskBoardProps> = ({
     }
   };
 
-  const handleEditColumn = (columnId: string) => {
-    console.log("handleEditColumn", { columnId });
-    // if(onEditColumn){
-    //   onEditColumn(...)
-    // }
+  const handleEditColumn = (editedColumn: ColumnData) => {
+    const newData = data.map((column) =>
+      column.id === editedColumn.id ? editedColumn : column
+    );
+    if (onEditColumn) {
+      onEditColumn(newData);
+    }
   };
 
   const handleDeleteColumn = (columnId: string) => {
