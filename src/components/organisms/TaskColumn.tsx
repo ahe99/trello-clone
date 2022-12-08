@@ -5,6 +5,7 @@ import { Draggable, Droppable } from "react-beautiful-dnd";
 import { DROP_TYPE } from "@helpers/constants";
 import { getDraggableColumnId, getDroppableColumnId } from "@helpers/position";
 import type { ColumnData, CardData } from "@utils/Data";
+import { useModal } from "@hooks";
 
 import { Button, ColumnTitle, Icon } from "@components/atoms";
 import { TaskCard, Dropdown } from "@components/molecules";
@@ -45,9 +46,13 @@ export const TaskColumn: FC<TaskColumnProps> = ({
   onEdit,
   onDelete,
 }) => {
+  const modal = useModal();
+
   const handleClickAction = (key: string) => {
     if (key === "Edit" && onEdit) {
-      onEdit({ id: columnId, title, data });
+      modal.putContent("Coming soon...");
+      modal.show();
+      // onEdit({ id: columnId, title, data });
     } else if (key === "Delete" && onDelete) {
       onDelete(columnId);
     }

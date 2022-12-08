@@ -4,6 +4,8 @@ import { Draggable } from "react-beautiful-dnd";
 
 import { getDraggableCardId } from "@helpers/position";
 import type { CardData } from "@utils/Data";
+import { useModal } from "@hooks";
+
 import { Icon, CardTitle, CardDescription } from "@components/atoms";
 import { Dropdown } from "./Dropdown";
 import type { Option } from "./Dropdown";
@@ -38,9 +40,13 @@ export const TaskCard: FC<TaskCardProps> = ({
 }) => {
   const { id: cardId, title, description, types } = data;
 
+  const modal = useModal();
+
   const handleClickAction = (key: string) => {
     if (key === "Edit" && onEdit) {
-      onEdit(data);
+      // onEdit(data);
+      modal.putContent("Coming soon...");
+      modal.show();
     } else if (key === "Delete" && onDelete) {
       onDelete(cardId);
     }
