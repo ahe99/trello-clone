@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import type { FC, ChangeEvent, KeyboardEvent } from "react";
 
 interface InputProps {
@@ -55,7 +55,7 @@ export const Input: FC<InputProps> = ({
     }
   };
 
-  const InputBody = () => {
+  const InputBody = useMemo(() => {
     if (inputMode === "INPUT") {
       return (
         <input
@@ -66,7 +66,6 @@ export const Input: FC<InputProps> = ({
           onBlur={handleBlur}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
-          autoFocus
         />
       );
     } else if (inputMode === "VIEW") {
@@ -88,13 +87,13 @@ export const Input: FC<InputProps> = ({
         </div>
       );
     }
-  };
+  }, [inputMode, placeholder, value, innerClassName]);
 
   return (
     <div
       className={`flex h-8 w-full cursor-pointer items-center overflow-hidden rounded-md bg-primary-200 text-primary-800 hover:bg-primary-400 ${className}`}
     >
-      <InputBody />
+      {InputBody}
     </div>
   );
 };

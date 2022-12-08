@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useMemo } from "react";
 import type { FC, ChangeEvent, KeyboardEvent, FocusEvent } from "react";
 
 interface TextareaProps {
@@ -51,7 +51,7 @@ export const Textarea: FC<TextareaProps> = ({
     }
   };
 
-  const InputBody = () => {
+  const InputBody = useMemo(() => {
     if (inputMode === "INPUT") {
       return (
         <textarea
@@ -85,13 +85,13 @@ export const Textarea: FC<TextareaProps> = ({
         </div>
       );
     }
-  };
+  }, [inputMode, value, placeholder, innerClassName]);
 
   return (
     <div
       className={`flex w-full cursor-pointer items-center overflow-hidden rounded-md bg-primary-200 text-primary-800 hover:bg-primary-400 ${className}`}
     >
-      <InputBody />
+      {InputBody}
     </div>
   );
 };
