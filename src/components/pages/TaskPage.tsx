@@ -10,41 +10,53 @@ export interface TaskPageProps {
 
 const mockBoard = [
   {
-    title: "board1",
+    title: "the project",
     id: "board1",
     data: [
       {
         id: "0",
-        title: "test column 1",
+        title: "todo",
         data: [
           {
             id: "0",
-            title: "test card 1",
-            description: "test card 1",
+            title: "Fix Bug",
+            description: "Fix the bug ASAP",
             types: ["test type"],
           },
           {
             id: "1",
-            title: "test card 2",
-            description: "test card 2",
+            title: "Watch tutorial on youtube",
+            description: "keep growing!",
             types: ["test type"],
           },
           {
             id: "2",
-            title: "test card 3",
-            description: "test card 3",
+            title: "Continue on the project",
+            description: "to work on the editing",
             types: ["test type"],
           },
         ],
       },
       {
         id: "1",
-        title: "test column 2",
+        title: "doing",
         data: [
           {
-            id: "3",
-            title: "test card 4",
-            description: "test card 4",
+            id: "10",
+            title: "Plan on the structure",
+            description: "project structure",
+            types: ["test type"],
+          },
+        ],
+      },
+      {
+        id: "2",
+        title: "done",
+        data: [
+          {
+            id: "20",
+            title: "Design the page",
+            description: "Design the UI",
             types: ["test type"],
           },
         ],
