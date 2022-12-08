@@ -43,7 +43,7 @@ export const parameters = {
     storySort: {
       includeName: true,
       method: "",
-      order: ["atoms", "molecules", "organisms", "templates", "pages"],
+      order: ["pages", "atoms", "molecules", "organisms", "templates"],
     },
     panelPosition: "right",
   },

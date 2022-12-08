@@ -23,13 +23,13 @@ import { TaskColumn } from "@components/organisms";
 import { Button, Icon, Tag } from "@components/atoms";
 export interface TaskBoardProps extends BoardData {
   className?: string;
-  onDragEnd?: (newData: ColumnData[]) => void;
-  onCreateCard?: (newData: ColumnData[]) => void;
-  onEditCard?: (newData: ColumnData[]) => void;
-  onDeleteCard?: (newData: ColumnData[]) => void;
-  onCreateColumn?: (newData: ColumnData[]) => void;
-  onEditColumn?: (newData: ColumnData[]) => void;
-  onDeleteColumn?: (newData: ColumnData[]) => void;
+  onDragEnd?: (newData: BoardData) => void;
+  onCreateCard?: (newData: BoardData) => void;
+  onEditCard?: (newData: BoardData) => void;
+  onDeleteCard?: (newData: BoardData) => void;
+  onCreateColumn?: (newData: BoardData) => void;
+  onEditColumn?: (newData: BoardData) => void;
+  onDeleteColumn?: (newData: BoardData) => void;
 }
 
 export const TaskBoard: FC<TaskBoardProps> = ({
@@ -53,7 +53,7 @@ export const TaskBoard: FC<TaskBoardProps> = ({
     const newColumn = createColumn();
     const newData = [...data, newColumn];
     if (onCreateColumn) {
-      onCreateColumn(newData);
+      onCreateColumn({ id: boardId, title, data: newData });
     }
   };
 
@@ -62,14 +62,14 @@ export const TaskBoard: FC<TaskBoardProps> = ({
       column.id === editedColumn.id ? editedColumn : column
     );
     if (onEditColumn) {
-      onEditColumn(newData);
+      onEditColumn({ id: boardId, title, data: newData });
     }
   };
 
   const handleDeleteColumn = (columnId: string) => {
     const newData = data.filter((column) => column.id !== columnId);
     if (onDeleteColumn) {
-      onDeleteColumn(newData);
+      onDeleteColumn({ id: boardId, title, data: newData });
     }
   };
 
@@ -87,7 +87,7 @@ export const TaskBoard: FC<TaskBoardProps> = ({
       }
     });
     if (onCreateCard) {
-      onCreateCard(newData);
+      onCreateCard({ id: boardId, title, data: newData });
     }
   };
 
@@ -109,7 +109,7 @@ export const TaskBoard: FC<TaskBoardProps> = ({
       }
     });
     if (onEditCard) {
-      onEditCard(newData);
+      onEditCard({ id: boardId, title, data: newData });
     }
   };
 
@@ -126,7 +126,7 @@ export const TaskBoard: FC<TaskBoardProps> = ({
       }
     });
     if (onDeleteCard) {
-      onDeleteCard(newData);
+      onDeleteCard({ id: boardId, title, data: newData });
     }
   };
 
@@ -146,7 +146,7 @@ export const TaskBoard: FC<TaskBoardProps> = ({
     }
 
     if (onDragEnd) {
-      onDragEnd(newData);
+      onDragEnd({ id: boardId, title, data: newData });
     }
   };
 
@@ -245,7 +245,7 @@ export const TaskBoard: FC<TaskBoardProps> = ({
             </Droppable>
 
             <Button
-              className="mb-2 mr-2 flex w-6 items-center justify-center rounded-md bg-primary-500 text-primary-900 opacity-40 hover:border-2 hover:border-solid hover:opacity-100"
+              className="mr-2 flex w-6 items-center justify-center rounded-md bg-primary-500 text-primary-900 opacity-40 hover:border-2 hover:border-solid hover:opacity-100"
               onClick={handleCreateColumn}
             >
               <Icon type="Plus" />
