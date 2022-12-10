@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  page:
+    restart: always
+    build: .
+    stdin_open: true
+    volumes:
+      - "./:/usr/src/app"
+      - "/usr/src/app/node_modules"
+    ports:
+      - "3000:3000"
+    # env_file:
+    #   - .env
+  storybook:
+    build:
+      context: .
+      dockerfile: Dockerfile.Storybook
+    restart: always
+    volumes:
+      - "./:/usr/src/app"
+      - "/usr/src/app/node_modules"
+    ports:
+      - 6006:6006
+    # env_file:
+    #   - .env

@@ -1,0 +1,9 @@
+FROM node:alpine
+WORKDIR /usr/src/app
+
+COPY package.* .
+
+RUN npm install
+
+EXPOSE 6006
+CMD ["npm", "run", "dev:storybook"]

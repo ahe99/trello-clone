@@ -1,0 +1,5 @@
+core
+Dockerfile*
+docker-compose*
+Makefile
+node_modules
